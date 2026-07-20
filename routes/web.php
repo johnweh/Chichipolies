@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\VoteController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
@@ -11,6 +12,9 @@ Route::middleware(['auth'])->group(function () {
     Route::get('dashboard', function () {
         return Inertia::render('dashboard');
     })->name('dashboard');
+
+    Route::post('/post/{post}/vote', [VoteController::class, 'store'])
+        ->name('votes.store');
 });
 
 // Temporary — replaced by the real admin area in Task 10.
