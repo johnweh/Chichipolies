@@ -2,6 +2,7 @@
 
 use App\Models\Post;
 use App\Models\User;
+use Illuminate\Http\Client\ConnectionException;
 use Illuminate\Support\Facades\Http;
 
 it('improves a post via the claude api', function () {
@@ -49,4 +50,13 @@ it('returns 502 when the api fails', function () {
 it('requires login', function () {
     $this->postJson(route('ai.improve-post'), ['title' => 't', 'body' => 'b'])
         ->assertUnauthorized();
+});
+
+it('returns 502 when the api connection fails', function () {
+    Http::fake(fn () => throw new ConnectionException('timeout'));
+
+    $this->actingAs(User::factory()->create())
+        ->postJson(route('ai.improve-post'), ['title' => 'a title', 'body' => 'a body of text here'])
+        ->assertStatus(502)
+        ->assertJson(['message' => 'AI helper is unavailable right now.']);
 });

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Post;
 use App\Services\AiWritingService;
+use Illuminate\Http\Client\ConnectionException;
 use Illuminate\Http\Client\RequestException;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -21,7 +22,7 @@ class AiController extends Controller
 
         try {
             return response()->json($this->ai->improvePost($validated['title'], $validated['body']));
-        } catch (RequestException) {
+        } catch (ConnectionException|RequestException) {
             return response()->json(['message' => 'AI helper is unavailable right now.'], 502);
         }
     }
@@ -32,7 +33,7 @@ class AiController extends Controller
 
         try {
             return response()->json(['comment' => $this->ai->suggestComment(Post::query()->findOrFail($validated['post_id']))]);
-        } catch (RequestException) {
+        } catch (ConnectionException|RequestException) {
             return response()->json(['message' => 'AI helper is unavailable right now.'], 502);
         }
     }

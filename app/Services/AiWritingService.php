@@ -4,6 +4,7 @@ namespace App\Services;
 
 use App\Models\Post;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Str;
 
 class AiWritingService
 {
@@ -34,6 +35,15 @@ class AiWritingService
         return ['title' => (string) $decoded['title'], 'body' => (string) $decoded['body']];
     }
 
+    /**
+     * Suggest a short comment for a post.
+     *
+     * The post's title/body are author-controlled and are interpolated into the prompt sent
+     * to the model, and the returned suggestion is auto-filled into another user's comment box.
+     * Treat the return value as untrusted plain text: it is constrained to a single line capped
+     * at 280 characters below, but callers must still render it escaped (never as HTML/markup)
+     * and the reader must explicitly click Post before it is submitted.
+     */
     public function suggestComment(Post $post): string
     {
         $prompt = <<<PROMPT
@@ -46,7 +56,9 @@ class AiWritingService
         Story: {$post->body}
         PROMPT;
 
-        return trim($this->complete($prompt));
+        $text = str_replace(["\r", "\n"], ' ', trim($this->complete($prompt)));
+
+        return Str::limit($text, 280, '');
     }
 
     private function complete(string $prompt): string
