@@ -1,4 +1,5 @@
 import { Head, useForm } from '@inertiajs/react';
+import { useState } from 'react';
 import PublicLayout from '@/layouts/public-layout';
 
 interface Props {
@@ -16,9 +17,32 @@ export default function PostCreate({ categories, counties }: Props) {
         video_url: string;
     }>({ title: '', body: '', category: '', county: '', photo: null, video_url: '' });
 
+    const [improving, setImproving] = useState(false);
+
     const submit = (e: React.FormEvent) => {
         e.preventDefault();
         post('/submit');
+    };
+
+    const improve = async () => {
+        setImproving(true);
+        try {
+            const res = await fetch('/ai/improve-post', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-XSRF-TOKEN': decodeURIComponent(document.cookie.match(/XSRF-TOKEN=([^;]+)/)?.[1] ?? ''),
+                },
+                body: JSON.stringify({ title: data.title, body: data.body }),
+            });
+            if (!res.ok) throw new Error();
+            const improved = await res.json();
+            setData((d) => ({ ...d, title: improved.title, body: improved.body }));
+        } catch {
+            alert('AI helper is unavailable right now.');
+        } finally {
+            setImproving(false);
+        }
     };
 
     const field = 'w-full rounded-lg border border-gray-300 px-3 py-2 text-sm dark:border-gray-700 dark:bg-gray-900';
@@ -88,6 +112,14 @@ export default function PostCreate({ categories, counties }: Props) {
                     />
                     {error('video_url')}
                 </div>
+                <button
+                    type="button"
+                    onClick={improve}
+                    disabled={improving || !data.title || !data.body}
+                    className="rounded-lg border border-blue-900 px-4 py-2 text-sm font-medium text-blue-900 disabled:opacity-50 dark:border-blue-300 dark:text-blue-300"
+                >
+                    {improving ? 'Improving…' : '✨ Improve my story'}
+                </button>
                 <button
                     type="submit"
                     disabled={processing}

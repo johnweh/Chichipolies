@@ -1,4 +1,5 @@
 import { Head, router, useForm, usePage } from '@inertiajs/react';
+import { useState } from 'react';
 import ReportDialog from '@/components/report-dialog';
 import VerificationBadge from '@/components/verification-badge';
 import VideoEmbed from '@/components/video-embed';
@@ -14,6 +15,27 @@ interface Props {
 export default function PostShow({ post, userVote, reportReasons }: Props) {
     const { auth } = usePage().props as { auth: { user: { id: number } | null } };
     const commentForm = useForm({ body: '' });
+    const [suggesting, setSuggesting] = useState(false);
+
+    const suggest = async () => {
+        setSuggesting(true);
+        try {
+            const res = await fetch('/ai/suggest-comment', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-XSRF-TOKEN': decodeURIComponent(document.cookie.match(/XSRF-TOKEN=([^;]+)/)?.[1] ?? ''),
+                },
+                body: JSON.stringify({ post_id: post.id }),
+            });
+            if (!res.ok) throw new Error();
+            commentForm.setData('body', (await res.json()).comment);
+        } catch {
+            alert('AI helper is unavailable right now.');
+        } finally {
+            setSuggesting(false);
+        }
+    };
 
     const vote = (isTrue: boolean) => {
         if (!auth.user) return router.visit('/login');
@@ -91,6 +113,14 @@ export default function PostShow({ post, userVote, reportReasons }: Props) {
                                 placeholder="Write a comment..."
                                 className="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm dark:border-gray-700 dark:bg-gray-900"
                             />
+                            <button
+                                type="button"
+                                onClick={suggest}
+                                disabled={suggesting}
+                                className="rounded-lg border border-gray-300 px-3 text-sm dark:border-gray-700"
+                            >
+                                ✨
+                            </button>
                             <button
                                 type="submit"
                                 disabled={commentForm.processing}

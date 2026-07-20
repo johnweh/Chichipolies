@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\UserController;
+use App\Http\Controllers\AiController;
 use App\Http\Controllers\CommentController;
 use App\Http\Controllers\FeedController;
 use App\Http\Controllers\PostController;
@@ -30,6 +31,11 @@ Route::middleware(['auth'])->group(function () {
 
     Route::post('/post/{post}/report', [ReportController::class, 'store'])
         ->name('reports.store');
+});
+
+Route::middleware(['auth', 'throttle:10,1'])->prefix('ai')->name('ai.')->group(function () {
+    Route::post('/improve-post', [AiController::class, 'improvePost'])->name('improve-post');
+    Route::post('/suggest-comment', [AiController::class, 'suggestComment'])->name('suggest-comment');
 });
 
 Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(function () {
