@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\CommentController;
 use App\Http\Controllers\VoteController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -15,6 +16,9 @@ Route::middleware(['auth'])->group(function () {
 
     Route::post('/post/{post}/vote', [VoteController::class, 'store'])
         ->name('votes.store');
+
+    Route::post('/post/{post}/comments', [CommentController::class, 'store'])
+        ->name('comments.store');
 });
 
 // Temporary — replaced by the real admin area in Task 10.
