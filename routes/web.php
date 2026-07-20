@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\Admin\DashboardController;
+use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\CommentController;
 use App\Http\Controllers\FeedController;
 use App\Http\Controllers\PostController;
@@ -30,8 +32,13 @@ Route::middleware(['auth'])->group(function () {
         ->name('reports.store');
 });
 
-// Temporary — replaced by the real admin area in Task 10.
-Route::get('/admin', fn () => response('ok'))->middleware(['auth', 'admin'])->name('admin.index');
+Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(function () {
+    Route::get('/', [DashboardController::class, 'index'])->name('index');
+    Route::delete('/posts/{post}', [App\Http\Controllers\Admin\PostController::class, 'destroy'])->name('posts.destroy');
+    Route::post('/users/{user}/ban', [UserController::class, 'ban'])->name('users.ban');
+    Route::post('/users/{user}/unban', [UserController::class, 'unban'])->name('users.unban');
+    Route::post('/reports/{report}/dismiss', [App\Http\Controllers\Admin\ReportController::class, 'dismiss'])->name('reports.dismiss');
+});
 
 require __DIR__.'/settings.php';
 require __DIR__.'/auth.php';
