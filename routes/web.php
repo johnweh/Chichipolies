@@ -1,14 +1,13 @@
 <?php
 
 use App\Http\Controllers\CommentController;
+use App\Http\Controllers\FeedController;
 use App\Http\Controllers\ReportController;
 use App\Http\Controllers\VoteController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
-Route::get('/', function () {
-    return Inertia::render('welcome');
-})->name('home');
+Route::get('/', [FeedController::class, 'index'])->name('home');
 
 Route::middleware(['auth'])->group(function () {
     Route::get('dashboard', function () {
