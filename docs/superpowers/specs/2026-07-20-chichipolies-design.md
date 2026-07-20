@@ -15,7 +15,7 @@ Full clone of the reference site's feature set in our stack, plus one deliberate
 - Standalone repo at `~/Products/chichipolies`
 - Laravel 12, PHP 8.2+
 - Inertia v2 + React 19, Tailwind CSS 4
-- Auth: Laravel Fortify (session-based)
+- Auth: Laravel 12 React starter kit's built-in session auth (login/register/reset) — replaces the originally named Fortify; same session-based capability
 - Testing: Pest 3
 - Database: SQLite (local/test), MySQL 8 (prod)
 - Routing: explicit routes in `routes/web.php`; Inertia page controllers under `App\Http\Controllers`
