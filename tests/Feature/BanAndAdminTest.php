@@ -15,7 +15,7 @@ it('logs out a user banned mid-session', function () {
     $user = User::factory()->create();
     $this->actingAs($user);
 
-    $user->update(['banned_at' => now()]);
+    $user->forceFill(['banned_at' => now()])->save();
 
     $this->get('/')->assertRedirect(route('login'));
     $this->assertGuest();

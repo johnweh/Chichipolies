@@ -12,14 +12,14 @@ class UserController extends Controller
     {
         abort_if($user->is_admin, 403);
 
-        $user->update(['banned_at' => now()]);
+        $user->forceFill(['banned_at' => now()])->save();
 
         return back()->with('success', 'User banned.');
     }
 
     public function unban(User $user): RedirectResponse
     {
-        $user->update(['banned_at' => null]);
+        $user->forceFill(['banned_at' => null])->save();
 
         return back()->with('success', 'User unbanned.');
     }
