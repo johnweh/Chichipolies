@@ -13,5 +13,8 @@ Route::middleware(['auth'])->group(function () {
     })->name('dashboard');
 });
 
+// Temporary — replaced by the real admin area in Task 10.
+Route::get('/admin', fn () => response('ok'))->middleware(['auth', 'admin'])->name('admin.index');
+
 require __DIR__.'/settings.php';
 require __DIR__.'/auth.php';
