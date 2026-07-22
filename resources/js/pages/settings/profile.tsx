@@ -9,8 +9,7 @@ import InputError from '@/components/input-error';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import AppLayout from '@/layouts/app-layout';
-import SettingsLayout from '@/layouts/settings/layout';
+import SettingsShell from '@/layouts/settings-shell';
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
@@ -34,10 +33,9 @@ export default function Profile({ mustVerifyEmail, status }: { mustVerifyEmail: 
     };
 
     return (
-        <AppLayout breadcrumbs={breadcrumbs}>
+        <SettingsShell breadcrumbs={breadcrumbs}>
             <Head title="Profile settings" />
 
-            <SettingsLayout>
                 <div className="space-y-6">
                     <HeadingSmall title="Profile information" description="Update your name and email address" />
 
@@ -114,7 +112,6 @@ export default function Profile({ mustVerifyEmail, status }: { mustVerifyEmail: 
                 </div>
 
                 <DeleteUser />
-            </SettingsLayout>
-        </AppLayout>
+        </SettingsShell>
     );
 }
