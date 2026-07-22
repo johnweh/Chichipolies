@@ -17,17 +17,17 @@
             padding: 24px; text-align: center;
         }
         @media (prefers-color-scheme: dark) {
-            body { background: hsl(30, 10%, 6%); color: hsl(40, 20%, 92%); }
-            .code { color: hsl(222, 48%, 66%) !important; }
-            a.btn { background: hsl(222, 48%, 66%) !important; color: hsl(30, 10%, 8%) !important; }
+            body { background: hsl(224, 25%, 7%); color: hsl(220, 22%, 92%); }
+            .code { color: hsl(219, 58%, 70%) !important; }
+            a.btn { background: hsl(219, 58%, 70%) !important; color: hsl(224, 25%, 8%) !important; }
         }
         main { max-width: 26rem; }
-        .code { font-family: 'Fraunces', Georgia, serif; font-size: 5rem; font-weight: 600; line-height: 1; color: hsl(224, 58%, 30%); opacity: .35; }
+        .code { font-family: 'Fraunces', Georgia, serif; font-size: 5rem; font-weight: 600; line-height: 1; color: hsl(220, 62%, 28%); opacity: .35; }
         h1 { font-family: 'Fraunces', Georgia, serif; font-size: 1.75rem; font-weight: 600; margin-top: 12px; letter-spacing: -0.01em; }
         p { margin-top: 10px; font-size: .9rem; line-height: 1.6; opacity: .65; }
         a.btn {
             display: inline-block; margin-top: 28px; padding: 10px 22px; border-radius: 999px;
-            background: hsl(224, 58%, 30%); color: hsl(40, 33%, 98%); text-decoration: none;
+            background: hsl(220, 62%, 28%); color: hsl(40, 33%, 98%); text-decoration: none;
             font-size: .875rem; font-weight: 600; transition: opacity .3s cubic-bezier(.32,.72,0,1);
         }
         a.btn:hover { opacity: .9; }

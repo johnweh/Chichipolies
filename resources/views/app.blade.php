@@ -10,7 +10,7 @@
         <link rel="icon" href="/icon-192.png" type="image/png" sizes="192x192">
         <link rel="apple-touch-icon" href="/apple-touch-icon.png">
         <link rel="manifest" href="/manifest.json">
-        <meta name="theme-color" content="#20386F">
+        <meta name="theme-color" content="#1B3874">
         <meta name="description" content="Liberia's community-driven news platform. Citizens report, the community verifies.">
         <meta property="og:type" content="website">
         <meta property="og:site_name" content="Chichipolies">

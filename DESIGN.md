@@ -1,16 +1,16 @@
 # Chichipolies — Design System
 
-Editorial warmth: cream paper, ink text, one navy accent, serif display type. Both light and dark modes are first-class (dark = warm ink, never pure black).
+Editorial warmth: cream paper, ink text, one navy accent, serif display type. Both light and dark modes are first-class (light = warm paper, dark = deep flag-navy "Liberian night").
 
 ## Colour
 
 Tokens live in `resources/css/app.css` (`:root` / `.dark`). Strategy: **restrained** — tinted warm neutrals + one navy accent.
 
 - Light: background `hsl(40 33% 97%)` (cream), card `hsl(40 30% 99%)`, foreground `hsl(30 12% 12%)` (warm ink), border `hsl(38 16% 88%)`.
-- Dark: background `hsl(30 10% 6%)`, card `hsl(30 10% 9%)`, foreground `hsl(40 20% 92%)`.
-- Primary (single accent): `hsl(224 58% 30%)` navy (light) / `hsl(222 48% 66%)` (dark). Brand hex for meta/manifest: `#20386F`.
+- Dark ("Liberian night"): background `hsl(224 25% 7%)` deep flag-navy, card `hsl(224 22% 10%)`, foreground `hsl(220 22% 92%)` star-white; all dark neutrals are navy-tinted (the dark theme is the blue canton).
+- Primary (single accent): `hsl(220 62% 28%)` Liberian-flag blue (light) / `hsl(219 58% 70%)` (dark). Brand hex for meta/manifest: `#1B3874`. Flag red is deliberately NOT a brand colour: red stays semantic-only (Likely False / report / ban).
 - Semantic status only: emerald (Likely True), red (Likely False), amber (Disputed), muted grey (Unverified). Always at /10–/20 tints with matching text colour, never saturated fills except active vote buttons.
-- All greys are warm-tinted. Never `#000`/`#fff`, never cool greys.
+- Light-mode greys are warm-tinted; dark-mode greys are navy-tinted. Never `#000`/`#fff`.
 
 ## Typography
 
@@ -57,7 +57,7 @@ List rows separate with `divide-y divide-border/70` hairlines — no bordered ca
 - `featured-post` — page-1 lead story hero (photo, "Latest" tag, large headline).
 - `verification-badge` — status pill with icon; `flash-toast` — bottom-centre success pill.
 - Category filter = scrollable chip row; county = select.
-- Brand mark: navy squircle + serif "C" (`public/favicon.svg`, icon-192/512, apple-touch-icon).
+- Brand mark: navy squircle + serif "C" + lone star top-right (`public/favicon.svg`, icon-192/512, apple-touch-icon). The star (Phosphor `Star` weight=fill) also appears in the auth mark and the feed masthead eyebrow — the only flag reference besides the blue.
 
 ## Copy rules
 

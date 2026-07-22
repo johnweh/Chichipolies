@@ -1,4 +1,4 @@
-import { CaretLeft, CaretRight, MagnifyingGlass, Newspaper } from '@phosphor-icons/react';
+import { CaretLeft, CaretRight, MagnifyingGlass, Newspaper, Star } from '@phosphor-icons/react';
 import { Head, Link, router, usePage } from '@inertiajs/react';
 import { useState } from 'react';
 import FeaturedPost from '@/components/featured-post';
@@ -41,7 +41,8 @@ export default function FeedIndex({ posts, filters, categories, counties }: Prop
             <Head title="Community News" />
 
             <Reveal>
-                <span className="inline-flex items-center rounded-full border border-border bg-card px-3 py-1 text-[10px] font-semibold tracking-[0.2em] text-muted-foreground uppercase">
+                <span className="inline-flex items-center gap-1.5 rounded-full border border-border bg-card px-3 py-1 text-[10px] font-semibold tracking-[0.2em] text-muted-foreground uppercase">
+                    <Star weight="fill" className="size-2.5 text-primary" />
                     Citizen reporting &middot; 15 counties
                 </span>
                 <h1 className="font-display mt-4 text-3xl font-semibold tracking-tight text-foreground sm:text-4xl">

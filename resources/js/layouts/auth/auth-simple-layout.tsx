@@ -1,3 +1,4 @@
+import { Star } from '@phosphor-icons/react';
 import { Link } from '@inertiajs/react';
 
 interface AuthLayoutProps {
@@ -13,8 +14,9 @@ export default function AuthSimpleLayout({ children, title, description }: AuthL
             <div className="w-full max-w-sm">
                 <div className="mb-8 flex flex-col items-center gap-4 text-center">
                     <Link href={route('home')} className="flex flex-col items-center gap-3">
-                        <span className="flex size-11 items-center justify-center rounded-2xl bg-primary shadow-[0_8px_24px_-8px_hsl(224,58%,30%,0.5)]">
+                        <span className="relative flex size-11 items-center justify-center rounded-2xl bg-primary shadow-[0_8px_24px_-8px_hsl(220,62%,28%,0.5)]">
                             <span className="font-display text-2xl leading-none font-semibold text-primary-foreground">C</span>
+                            <Star weight="fill" className="absolute top-1.5 right-1.5 size-2.5 text-primary-foreground" />
                         </span>
                         <span className="font-display text-lg font-semibold tracking-tight text-foreground">Chichipolies</span>
                     </Link>
