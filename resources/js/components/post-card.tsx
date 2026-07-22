@@ -1,30 +1,58 @@
+import { ChatCircle, CheckCircle, XCircle } from '@phosphor-icons/react';
 import { Link } from '@inertiajs/react';
 import VerificationBadge from '@/components/verification-badge';
 import type { PostSummary } from '@/types/chichipolies';
 
+function timeAgo(iso: string): string {
+    const seconds = (Date.now() - new Date(iso).getTime()) / 1000;
+    if (seconds < 3600) return `${Math.max(1, Math.floor(seconds / 60))}m ago`;
+    if (seconds < 86400) return `${Math.floor(seconds / 3600)}h ago`;
+    if (seconds < 604800) return `${Math.floor(seconds / 86400)}d ago`;
+    return new Date(iso).toLocaleDateString('en-GB', { day: 'numeric', month: 'short' });
+}
+
 export default function PostCard({ post }: { post: PostSummary }) {
     return (
-        <Link
-            href={`/post/${post.id}`}
-            className="block rounded-xl border border-gray-200 bg-white p-4 transition hover:border-blue-900/40 dark:border-gray-700 dark:bg-gray-900"
-        >
-            <div className="flex items-center gap-2 text-xs text-gray-500 dark:text-gray-400">
-                <span className="rounded bg-blue-900/10 px-1.5 py-0.5 font-medium text-blue-900 dark:bg-blue-400/10 dark:text-blue-300">
-                    {post.category}
-                </span>
-                <span>{post.county}</span>
-                <VerificationBadge status={post.verification_status} />
-            </div>
-            <h2 className="mt-2 font-semibold text-gray-900 dark:text-gray-100">{post.title}</h2>
-            <p className="mt-1 line-clamp-2 text-sm text-gray-600 dark:text-gray-300">{post.body}</p>
-            {post.photo_url && (
-                <img src={post.photo_url} alt="" className="mt-3 max-h-48 w-full rounded-lg object-cover" />
-            )}
-            <div className="mt-3 flex gap-4 text-xs text-gray-500 dark:text-gray-400">
-                <span>✓ {post.true_votes}</span>
-                <span>✗ {post.false_votes}</span>
-                <span>💬 {post.comments_count}</span>
-                <span className="ml-auto">by {post.user.name}</span>
+        <Link href={`/post/${post.id}`} className="group block px-5 py-5 transition-colors duration-300 ease-fluid hover:bg-secondary/50 sm:px-6">
+            <div className="flex items-start gap-4">
+                <div className="min-w-0 flex-1">
+                    <div className="flex flex-wrap items-center gap-x-2 gap-y-1 text-[11px] font-medium tracking-[0.06em] text-muted-foreground uppercase">
+                        <span className="text-primary">{post.category}</span>
+                        <span aria-hidden>&middot;</span>
+                        <span>{post.county}</span>
+                        <VerificationBadge status={post.verification_status} />
+                    </div>
+                    <h2 className="font-display mt-1.5 text-lg leading-snug font-semibold text-foreground transition-colors duration-300 ease-fluid group-hover:text-primary">
+                        {post.title}
+                    </h2>
+                    <p className="mt-1 line-clamp-2 text-sm leading-relaxed text-muted-foreground">{post.body}</p>
+                    <div className="mt-3 flex items-center gap-4 text-xs text-muted-foreground tabular-nums">
+                        <span className="inline-flex items-center gap-1">
+                            <CheckCircle weight="light" className="size-3.5" />
+                            {post.true_votes}
+                        </span>
+                        <span className="inline-flex items-center gap-1">
+                            <XCircle weight="light" className="size-3.5" />
+                            {post.false_votes}
+                        </span>
+                        <span className="inline-flex items-center gap-1">
+                            <ChatCircle weight="light" className="size-3.5" />
+                            {post.comments_count}
+                        </span>
+                        <span className="ml-auto">
+                            {post.user.name} &middot; {timeAgo(post.created_at)}
+                        </span>
+                    </div>
+                </div>
+                {post.photo_url && (
+                    <div className="hidden shrink-0 rounded-2xl bg-foreground/5 p-1 ring-1 ring-border/70 sm:block">
+                        <img
+                            src={post.photo_url}
+                            alt=""
+                            className="size-24 rounded-[calc(1rem-0.25rem)] object-cover transition-transform duration-700 ease-fluid group-hover:scale-[1.03]"
+                        />
+                    </div>
+                )}
             </div>
         </Link>
     );

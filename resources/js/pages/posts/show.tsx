@@ -1,6 +1,8 @@
-import { Head, router, useForm, usePage } from '@inertiajs/react';
+import { ArrowLeft, ArrowUpRight, CheckCircle, PaperPlaneRight, Sparkle, XCircle } from '@phosphor-icons/react';
+import { Head, Link, router, useForm, usePage } from '@inertiajs/react';
 import { useState } from 'react';
 import ReportDialog from '@/components/report-dialog';
+import Reveal from '@/components/reveal';
 import VerificationBadge from '@/components/verification-badge';
 import VideoEmbed from '@/components/video-embed';
 import PublicLayout from '@/layouts/public-layout';
@@ -13,9 +15,10 @@ interface Props {
 }
 
 export default function PostShow({ post, userVote, reportReasons }: Props) {
-    const { auth } = usePage().props as { auth: { user: { id: number } | null } };
+    const { auth } = usePage().props as unknown as { auth: { user: { id: number } | null } };
     const commentForm = useForm({ body: '' });
     const [suggesting, setSuggesting] = useState(false);
+    const [copied, setCopied] = useState(false);
 
     const suggest = async () => {
         setSuggesting(true);
@@ -44,11 +47,16 @@ export default function PostShow({ post, userVote, reportReasons }: Props) {
 
     const share = async () => {
         const url = window.location.href;
-        if (navigator.share) {
-            await navigator.share({ title: post.title, url });
-        } else {
-            await navigator.clipboard.writeText(url);
-            alert('Link copied!');
+        try {
+            if (navigator.share) {
+                await navigator.share({ title: post.title, url });
+            } else {
+                await navigator.clipboard.writeText(url);
+                setCopied(true);
+                setTimeout(() => setCopied(false), 2000);
+            }
+        } catch {
+            /* user cancelled the share sheet */
         }
     };
 
@@ -60,87 +68,172 @@ export default function PostShow({ post, userVote, reportReasons }: Props) {
         });
     };
 
+    const voteButton = (isTrue: boolean, label: string, count: number) => {
+        const active = userVote === isTrue;
+        const activeClasses = isTrue
+            ? 'border-emerald-600/40 bg-emerald-600 text-white'
+            : 'border-red-600/40 bg-red-600 text-white';
+
+        return (
+            <button
+                onClick={() => vote(isTrue)}
+                className={`inline-flex items-center gap-1.5 rounded-full border px-4 py-2 text-sm font-medium transition-all duration-300 ease-fluid active:scale-[0.97] tabular-nums ${
+                    active ? activeClasses : 'border-input bg-card text-foreground hover:bg-secondary'
+                }`}
+            >
+                {isTrue ? <CheckCircle weight={active ? 'fill' : 'light'} className="size-4" /> : <XCircle weight={active ? 'fill' : 'light'} className="size-4" />}
+                {label} &middot; {count}
+            </button>
+        );
+    };
+
     return (
         <PublicLayout>
             <Head title={post.title} />
             <article>
-                <div className="flex items-center gap-2 text-xs text-gray-500">
-                    <span className="rounded bg-blue-900/10 px-1.5 py-0.5 font-medium text-blue-900 dark:bg-blue-400/10 dark:text-blue-300">
-                        {post.category}
-                    </span>
-                    <span>{post.county}</span>
-                    <VerificationBadge status={post.verification_status} />
-                </div>
-                <h1 className="mt-2 text-2xl font-bold">{post.title}</h1>
-                <p className="mt-1 text-xs text-gray-500">
-                    by {post.user.name} · {new Date(post.created_at).toLocaleDateString('en-GB')}
-                </p>
-                {post.photo_url && <img src={post.photo_url} alt="" className="mt-4 w-full rounded-xl" />}
-                {post.video_url && (
-                    <div className="mt-4">
-                        <VideoEmbed url={post.video_url} />
+                <Reveal>
+                    <Link
+                        href="/"
+                        className="inline-flex items-center gap-1.5 text-xs font-medium text-muted-foreground transition-colors duration-300 hover:text-foreground"
+                    >
+                        <ArrowLeft weight="bold" className="size-3.5" />
+                        All stories
+                    </Link>
+
+                    <div className="mt-5 flex flex-wrap items-center gap-x-2 gap-y-1 text-[11px] font-medium tracking-[0.06em] text-muted-foreground uppercase">
+                        <span className="text-primary">{post.category}</span>
+                        <span aria-hidden>&middot;</span>
+                        <span>{post.county}</span>
+                        <VerificationBadge status={post.verification_status} />
                     </div>
-                )}
-                <p className="mt-4 whitespace-pre-wrap text-gray-800 dark:text-gray-200">{post.body}</p>
 
-                <div className="mt-6 flex items-center gap-3 border-y border-gray-200 py-3 dark:border-gray-700">
-                    <span className="text-sm font-medium">Is this true?</span>
-                    <button
-                        onClick={() => vote(true)}
-                        className={`rounded-lg border px-3 py-1.5 text-sm ${userVote === true ? 'border-green-600 bg-green-600 text-white' : 'border-gray-300 dark:border-gray-700'}`}
-                    >
-                        True ({post.true_votes})
-                    </button>
-                    <button
-                        onClick={() => vote(false)}
-                        className={`rounded-lg border px-3 py-1.5 text-sm ${userVote === false ? 'border-red-600 bg-red-600 text-white' : 'border-gray-300 dark:border-gray-700'}`}
-                    >
-                        False ({post.false_votes})
-                    </button>
-                    <button onClick={share} className="ml-auto text-sm text-gray-500 hover:text-blue-900">
-                        ↗ Share
-                    </button>
-                    {auth.user && <ReportDialog postId={post.id} reasons={reportReasons} />}
-                </div>
+                    <h1 className="font-display mt-3 text-3xl leading-tight font-semibold tracking-tight text-foreground sm:text-4xl">
+                        {post.title}
+                    </h1>
 
-                <section className="mt-6">
-                    <h2 className="font-semibold">Comments ({post.comments.length})</h2>
-                    {auth.user ? (
-                        <form onSubmit={submitComment} className="mt-3 flex gap-2">
-                            <input
-                                value={commentForm.data.body}
-                                onChange={(e) => commentForm.setData('body', e.target.value)}
-                                placeholder="Write a comment..."
-                                className="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm dark:border-gray-700 dark:bg-gray-900"
-                            />
-                            <button
-                                type="button"
-                                onClick={suggest}
-                                disabled={suggesting}
-                                className="rounded-lg border border-gray-300 px-3 text-sm dark:border-gray-700"
-                            >
-                                ✨
-                            </button>
-                            <button
-                                type="submit"
-                                disabled={commentForm.processing}
-                                className="rounded-lg bg-blue-900 px-4 py-2 text-sm font-medium text-white disabled:opacity-50"
-                            >
-                                Post
-                            </button>
-                        </form>
-                    ) : (
-                        <p className="mt-3 text-sm text-gray-500">Sign in to comment.</p>
+                    <div className="mt-4 flex items-center gap-2.5">
+                        <span className="flex size-8 items-center justify-center rounded-xl bg-primary/10 text-xs font-bold text-primary uppercase">
+                            {post.user.name.charAt(0)}
+                        </span>
+                        <div className="text-xs">
+                            <p className="font-semibold text-foreground">{post.user.name}</p>
+                            <p className="text-muted-foreground">
+                                {new Date(post.created_at).toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' })}
+                            </p>
+                        </div>
+                    </div>
+                </Reveal>
+
+                <Reveal delay={100}>
+                    {post.photo_url && (
+                        <div className="mt-6 rounded-[1.75rem] bg-foreground/[0.03] p-1.5 ring-1 ring-border/70">
+                            <img src={post.photo_url} alt={post.title} className="w-full rounded-[calc(1.75rem-0.375rem)] object-cover" />
+                        </div>
                     )}
-                    <ul className="mt-4 flex flex-col gap-3">
-                        {post.comments.map((comment) => (
-                            <li key={comment.id} className="rounded-lg bg-gray-50 p-3 text-sm dark:bg-gray-800">
-                                <span className="font-medium">{comment.user.name}</span>
-                                <p className="mt-1 text-gray-700 dark:text-gray-300">{comment.body}</p>
-                            </li>
-                        ))}
-                    </ul>
-                </section>
+                    {post.video_url && (
+                        <div className="mt-6">
+                            <VideoEmbed url={post.video_url} />
+                        </div>
+                    )}
+
+                    <div className="mt-6 max-w-[65ch] text-[15px] leading-[1.75] whitespace-pre-wrap text-foreground/90">{post.body}</div>
+                </Reveal>
+
+                <Reveal delay={150}>
+                    <div className="mt-10 rounded-[1.75rem] bg-foreground/[0.03] p-1.5 ring-1 ring-border/70">
+                        <div className="rounded-[calc(1.75rem-0.375rem)] bg-card px-5 py-5 shadow-[inset_0_1px_1px_hsl(40,30%,100%,0.4)] sm:px-6 dark:shadow-none">
+                            <p className="text-[10px] font-semibold tracking-[0.2em] text-muted-foreground uppercase">Community verification</p>
+                            <div className="mt-3 flex flex-wrap items-center gap-2">
+                                {voteButton(true, 'True', post.true_votes)}
+                                {voteButton(false, 'False', post.false_votes)}
+                                <div className="ml-auto flex items-center gap-1">
+                                    <button
+                                        onClick={share}
+                                        className="group inline-flex items-center gap-1.5 rounded-full px-3 py-2 text-xs font-medium text-muted-foreground transition-all duration-300 ease-fluid hover:bg-secondary hover:text-foreground active:scale-[0.97]"
+                                    >
+                                        {copied ? 'Link copied' : 'Share'}
+                                        <ArrowUpRight
+                                            weight="bold"
+                                            className="size-3.5 transition-transform duration-300 ease-fluid group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
+                                        />
+                                    </button>
+                                    {auth.user && <ReportDialog postId={post.id} reasons={reportReasons} />}
+                                </div>
+                            </div>
+                            {!auth.user && (
+                                <p className="mt-3 text-xs text-muted-foreground">
+                                    <Link href="/login" className="font-medium text-primary hover:underline">
+                                        Sign in
+                                    </Link>{' '}
+                                    to vote on whether this story is true.
+                                </p>
+                            )}
+                        </div>
+                    </div>
+                </Reveal>
+
+                <Reveal delay={200}>
+                    <section className="mt-12">
+                        <h2 className="font-display text-xl font-semibold text-foreground">
+                            Comments <span className="text-muted-foreground tabular-nums">({post.comments.length})</span>
+                        </h2>
+
+                        {auth.user ? (
+                            <form onSubmit={submitComment} className="mt-4 flex gap-2">
+                                <input
+                                    value={commentForm.data.body}
+                                    onChange={(e) => commentForm.setData('body', e.target.value)}
+                                    placeholder="Write a comment"
+                                    className="w-full rounded-full border border-input bg-card px-4 py-2.5 text-sm transition-all duration-300 ease-fluid focus:border-ring focus:ring-2 focus:ring-ring/25 focus:outline-none"
+                                />
+                                <button
+                                    type="button"
+                                    onClick={suggest}
+                                    disabled={suggesting}
+                                    aria-label="Suggest a comment"
+                                    title="Suggest a comment"
+                                    className="flex size-10 shrink-0 items-center justify-center rounded-full border border-input bg-card text-muted-foreground transition-all duration-300 ease-fluid hover:bg-secondary hover:text-foreground active:scale-95 disabled:opacity-50"
+                                >
+                                    <Sparkle weight={suggesting ? 'fill' : 'light'} className={`size-4 ${suggesting ? 'animate-pulse' : ''}`} />
+                                </button>
+                                <button
+                                    type="submit"
+                                    disabled={commentForm.processing || !commentForm.data.body.trim()}
+                                    aria-label="Post comment"
+                                    className="flex size-10 shrink-0 items-center justify-center rounded-full bg-primary text-primary-foreground transition-all duration-300 ease-fluid hover:opacity-90 active:scale-95 disabled:opacity-50"
+                                >
+                                    <PaperPlaneRight weight="fill" className="size-4" />
+                                </button>
+                            </form>
+                        ) : (
+                            <p className="mt-4 text-sm text-muted-foreground">
+                                <Link href="/login" className="font-medium text-primary hover:underline">
+                                    Sign in
+                                </Link>{' '}
+                                to join the conversation.
+                            </p>
+                        )}
+
+                        {commentForm.errors.body && <p className="mt-2 text-xs text-red-600">{commentForm.errors.body}</p>}
+
+                        <ul className="mt-6 divide-y divide-border/70">
+                            {post.comments.map((comment) => (
+                                <li key={comment.id} className="flex gap-3 py-4">
+                                    <span className="flex size-7 shrink-0 items-center justify-center rounded-lg bg-secondary text-[10px] font-bold text-muted-foreground uppercase">
+                                        {comment.user.name.charAt(0)}
+                                    </span>
+                                    <div className="min-w-0">
+                                        <p className="text-xs font-semibold text-foreground">{comment.user.name}</p>
+                                        <p className="mt-0.5 text-sm leading-relaxed text-foreground/85">{comment.body}</p>
+                                    </div>
+                                </li>
+                            ))}
+                            {post.comments.length === 0 && (
+                                <li className="py-6 text-sm text-muted-foreground">No comments yet. Share what you know.</li>
+                            )}
+                        </ul>
+                    </section>
+                </Reveal>
             </article>
         </PublicLayout>
     );

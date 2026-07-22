@@ -1,3 +1,4 @@
+import { Flag } from '@phosphor-icons/react';
 import { useForm } from '@inertiajs/react';
 import { useState } from 'react';
 
@@ -18,41 +19,72 @@ export default function ReportDialog({ postId, reasons }: { postId: number; reas
 
     return (
         <>
-            <button onClick={() => setOpen(true)} className="text-xs text-gray-500 hover:text-red-600">
-                ⚑ Report
+            <button
+                onClick={() => setOpen(true)}
+                className="inline-flex items-center gap-1.5 rounded-full px-3 py-2 text-xs font-medium text-muted-foreground transition-all duration-300 ease-fluid hover:bg-red-600/10 hover:text-red-600 active:scale-[0.97]"
+            >
+                <Flag weight="light" className="size-3.5" />
+                Report
             </button>
             {open && (
-                <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4" onClick={() => setOpen(false)}>
-                    <form
-                        onSubmit={submit}
-                        onClick={(e) => e.stopPropagation()}
-                        className="w-full max-w-sm rounded-xl bg-white p-5 dark:bg-gray-900"
-                    >
-                        <h3 className="font-semibold">Report abuse</h3>
-                        <select
-                            value={data.reason}
-                            onChange={(e) => setData('reason', e.target.value)}
-                            className="mt-3 w-full rounded-lg border border-gray-300 px-3 py-2 text-sm dark:border-gray-700 dark:bg-gray-800"
-                            required
-                        >
-                            <option value="">Select a reason</option>
-                            {reasons.map((r) => (
-                                <option key={r}>{r}</option>
-                            ))}
-                        </select>
-                        <div className="mt-4 flex justify-end gap-2">
-                            <button type="button" onClick={() => setOpen(false)} className="rounded-lg px-3 py-1.5 text-sm">
-                                Cancel
-                            </button>
-                            <button
-                                type="submit"
-                                disabled={processing || !data.reason}
-                                className="rounded-lg bg-red-600 px-3 py-1.5 text-sm font-medium text-white disabled:opacity-50"
-                            >
-                                Report
-                            </button>
-                        </div>
-                    </form>
+                <div
+                    className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 p-4 backdrop-blur-sm"
+                    onClick={() => setOpen(false)}
+                    role="dialog"
+                    aria-modal="true"
+                    aria-label="Report abuse"
+                >
+                    <div className="w-full max-w-sm rounded-[1.5rem] bg-foreground/[0.04] p-1.5 ring-1 ring-border/70" onClick={(e) => e.stopPropagation()}>
+                        <form onSubmit={submit} className="rounded-[calc(1.5rem-0.375rem)] bg-card p-5">
+                            <h3 className="font-display text-lg font-semibold text-foreground">Report this story</h3>
+                            <p className="mt-1 text-xs text-muted-foreground">Our moderators review every report.</p>
+
+                            <div className="mt-4 flex flex-col gap-1.5">
+                                {reasons.map((reason) => (
+                                    <label
+                                        key={reason}
+                                        className={`flex cursor-pointer items-center gap-2.5 rounded-xl border px-3.5 py-2.5 text-sm transition-all duration-300 ease-fluid ${
+                                            data.reason === reason
+                                                ? 'border-red-600/40 bg-red-600/10 font-medium text-red-700 dark:text-red-400'
+                                                : 'border-input text-foreground hover:bg-secondary'
+                                        }`}
+                                    >
+                                        <input
+                                            type="radio"
+                                            name="reason"
+                                            value={reason}
+                                            checked={data.reason === reason}
+                                            onChange={() => setData('reason', reason)}
+                                            className="sr-only"
+                                        />
+                                        <span
+                                            className={`size-2 shrink-0 rounded-full transition-colors duration-300 ${
+                                                data.reason === reason ? 'bg-red-600' : 'bg-border'
+                                            }`}
+                                        />
+                                        {reason}
+                                    </label>
+                                ))}
+                            </div>
+
+                            <div className="mt-5 flex justify-end gap-2">
+                                <button
+                                    type="button"
+                                    onClick={() => setOpen(false)}
+                                    className="rounded-full px-4 py-2 text-sm text-muted-foreground transition-colors duration-300 hover:text-foreground"
+                                >
+                                    Cancel
+                                </button>
+                                <button
+                                    type="submit"
+                                    disabled={processing || !data.reason}
+                                    className="rounded-full bg-red-600 px-4 py-2 text-sm font-semibold text-white transition-all duration-300 ease-fluid hover:bg-red-700 active:scale-[0.98] disabled:opacity-40"
+                                >
+                                    Submit report
+                                </button>
+                            </div>
+                        </form>
+                    </div>
                 </div>
             )}
         </>
