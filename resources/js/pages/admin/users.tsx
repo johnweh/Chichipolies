@@ -18,14 +18,13 @@ interface AdminUser {
 
 interface Props {
     users: AdminUser[];
-    pendingReports: number;
 }
 
-export default function AdminUsers({ users, pendingReports }: Props) {
+export default function AdminUsers({ users }: Props) {
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title="Admin — Members" />
-            <AdminLayout pendingReports={pendingReports}>
+            <AdminLayout>
                 <HeadingSmall title="Members" description="Everyone with an account, newest first" />
 
                 <div className="divide-y divide-border/70">

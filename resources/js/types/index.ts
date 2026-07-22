@@ -17,6 +17,7 @@ export interface NavItem {
     url: string;
     icon?: React.ComponentType<{ className?: string }> | null;
     isActive?: boolean;
+    badge?: number | null;
 }
 
 export interface SharedData {

@@ -2,6 +2,7 @@
 
 namespace App\Http\Middleware;
 
+use App\Models\Report;
 use Illuminate\Foundation\Inspiring;
 use Illuminate\Http\Request;
 use Inertia\Middleware;
@@ -48,6 +49,9 @@ class HandleInertiaRequests extends Middleware
             'flash' => [
                 'success' => $request->session()->get('success'),
             ],
+            'pendingReports' => fn (): ?int => $request->user()?->is_admin
+                ? Report::query()->where('status', 'pending')->count()
+                : null,
         ];
     }
 }

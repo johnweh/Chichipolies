@@ -10,14 +10,13 @@ const breadcrumbs: BreadcrumbItem[] = [{ title: 'Stories', href: '/admin/posts' 
 
 interface Props {
     posts: Paginated<PostSummary>;
-    pendingReports: number;
 }
 
-export default function AdminPosts({ posts, pendingReports }: Props) {
+export default function AdminPosts({ posts }: Props) {
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title="Admin — Stories" />
-            <AdminLayout pendingReports={pendingReports}>
+            <AdminLayout>
                 <HeadingSmall title="Stories" description="Every story on the platform, newest first" />
 
                 <div className="divide-y divide-border/70">

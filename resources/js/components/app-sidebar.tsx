@@ -7,7 +7,7 @@ import { Link, usePage } from '@inertiajs/react';
 import AppLogo from './app-logo';
 
 export function AppSidebar() {
-    const { auth } = usePage<SharedData>().props;
+    const { auth, pendingReports } = usePage<SharedData & { pendingReports?: number | null }>().props;
 
     const mainNavItems: NavItem[] = [
         {
@@ -19,7 +19,7 @@ export function AppSidebar() {
             ? [
                   { title: 'Stories', url: '/admin/posts', icon: Newspaper },
                   { title: 'Members', url: '/admin/users', icon: UsersThree },
-                  { title: 'Reports', url: '/admin/reports', icon: Flag },
+                  { title: 'Reports', url: '/admin/reports', icon: Flag, badge: pendingReports },
               ]
             : []),
         {

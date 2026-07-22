@@ -17,14 +17,13 @@ interface PendingReport {
 
 interface Props {
     reports: PendingReport[];
-    pendingReports: number;
 }
 
-export default function AdminReports({ reports, pendingReports }: Props) {
+export default function AdminReports({ reports }: Props) {
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title="Admin — Reports" />
-            <AdminLayout pendingReports={pendingReports}>
+            <AdminLayout>
                 <HeadingSmall title="Reports" description="Pending abuse reports from the community" />
 
                 <div className="divide-y divide-border/70">
