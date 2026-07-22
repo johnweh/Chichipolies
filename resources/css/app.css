@@ -175,3 +175,10 @@
 @utility ease-fluid {
     transition-timing-function: var(--ease-fluid);
 }
+
+@utility scrollbar-none {
+    scrollbar-width: none;
+    &::-webkit-scrollbar {
+        display: none;
+    }
+}

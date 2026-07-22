@@ -1,6 +1,7 @@
 import { CaretLeft, CaretRight, MagnifyingGlass, Newspaper } from '@phosphor-icons/react';
 import { Head, Link, router, usePage } from '@inertiajs/react';
 import { useState } from 'react';
+import FeaturedPost from '@/components/featured-post';
 import PostCard from '@/components/post-card';
 import Reveal from '@/components/reveal';
 import PublicLayout from '@/layouts/public-layout';
@@ -29,6 +30,11 @@ export default function FeedIndex({ posts, filters, categories, counties }: Prop
     };
 
     const pageLabel = (label: string) => label.replace('&laquo;', '').replace('&raquo;', '').trim();
+
+    const hasFilters = Boolean(filters.search || filters.category || filters.county);
+    const showHero = posts.current_page === 1 && !hasFilters && posts.data.length > 0;
+    const heroPost = showHero ? posts.data[0] : null;
+    const listPosts = showHero ? posts.data.slice(1) : posts.data;
 
     return (
         <PublicLayout>
@@ -68,16 +74,6 @@ export default function FeedIndex({ posts, filters, categories, counties }: Prop
                         />
                     </div>
                     <select
-                        value={filters.category ?? ''}
-                        onChange={(e) => applyFilters({ category: e.target.value || undefined })}
-                        className={field}
-                    >
-                        <option value="">All categories</option>
-                        {categories.map((c) => (
-                            <option key={c}>{c}</option>
-                        ))}
-                    </select>
-                    <select
                         value={filters.county ?? ''}
                         onChange={(e) => applyFilters({ county: e.target.value || undefined })}
                         className={field}
@@ -88,18 +84,44 @@ export default function FeedIndex({ posts, filters, categories, counties }: Prop
                         ))}
                     </select>
                 </form>
+
+                <div className="scrollbar-none -mx-4 mt-3 flex gap-1.5 overflow-x-auto px-4 pb-1 sm:mx-0 sm:flex-wrap sm:px-0">
+                    {['', ...categories].map((category) => {
+                        const active = (filters.category ?? '') === category;
+
+                        return (
+                            <button
+                                key={category || 'all'}
+                                onClick={() => applyFilters({ category: category || undefined })}
+                                className={`shrink-0 rounded-full px-3.5 py-1.5 text-xs font-medium whitespace-nowrap transition-all duration-300 ease-fluid active:scale-[0.97] ${
+                                    active
+                                        ? 'bg-primary font-semibold text-primary-foreground'
+                                        : 'border border-input bg-card text-muted-foreground hover:text-foreground'
+                                }`}
+                            >
+                                {category || 'All'}
+                            </button>
+                        );
+                    })}
+                </div>
             </Reveal>
 
-            <Reveal delay={180} className="mt-6">
-                {posts.data.length > 0 ? (
+            {heroPost && (
+                <Reveal delay={150} className="mt-6">
+                    <FeaturedPost post={heroPost} />
+                </Reveal>
+            )}
+
+            <Reveal delay={heroPost ? 220 : 180} className="mt-6">
+                {listPosts.length > 0 ? (
                     <div className="rounded-[1.75rem] bg-foreground/[0.03] p-1.5 ring-1 ring-border/70">
                         <div className="divide-y divide-border/70 overflow-hidden rounded-[calc(1.75rem-0.375rem)] bg-card shadow-[inset_0_1px_1px_hsl(40,30%,100%,0.4)] dark:shadow-none">
-                            {posts.data.map((post) => (
+                            {listPosts.map((post) => (
                                 <PostCard key={post.id} post={post} />
                             ))}
                         </div>
                     </div>
-                ) : (
+                ) : posts.data.length === 0 ? (
                     <div className="rounded-[1.75rem] bg-foreground/[0.03] p-1.5 ring-1 ring-border/70">
                         <div className="flex flex-col items-center rounded-[calc(1.75rem-0.375rem)] bg-card px-6 py-20 text-center">
                             <span className="flex size-12 items-center justify-center rounded-full bg-secondary text-muted-foreground">
@@ -107,7 +129,7 @@ export default function FeedIndex({ posts, filters, categories, counties }: Prop
                             </span>
                             <h2 className="font-display mt-4 text-lg font-semibold text-foreground">No stories here yet</h2>
                             <p className="mt-1 max-w-xs text-sm text-muted-foreground">
-                                {filters.search || filters.category || filters.county
+                                {hasFilters
                                     ? 'Nothing matches these filters. Try widening your search.'
                                     : 'Be the first to report what is happening in your county.'}
                             </p>
@@ -119,7 +141,7 @@ export default function FeedIndex({ posts, filters, categories, counties }: Prop
                             </Link>
                         </div>
                     </div>
-                )}
+                ) : null}
             </Reveal>
 
             {posts.links.length > 3 && (

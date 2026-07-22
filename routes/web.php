@@ -18,9 +18,7 @@ Route::get('/about', fn () => Inertia::render('about'))->name('about');
 Route::get('/post/{post}', [PostController::class, 'show'])->name('posts.show');
 
 Route::middleware(['auth'])->group(function () {
-    Route::get('dashboard', function () {
-        return Inertia::render('dashboard');
-    })->name('dashboard');
+    Route::get('dashboard', fn () => redirect()->route('home'))->name('dashboard');
 
     Route::get('/submit', [PostController::class, 'create'])->name('posts.create');
     Route::post('/submit', [PostController::class, 'store'])->name('posts.store');

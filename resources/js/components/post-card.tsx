@@ -1,15 +1,8 @@
 import { ChatCircle, CheckCircle, XCircle } from '@phosphor-icons/react';
 import { Link } from '@inertiajs/react';
 import VerificationBadge from '@/components/verification-badge';
+import { timeAgo } from '@/lib/time';
 import type { PostSummary } from '@/types/chichipolies';
-
-function timeAgo(iso: string): string {
-    const seconds = (Date.now() - new Date(iso).getTime()) / 1000;
-    if (seconds < 3600) return `${Math.max(1, Math.floor(seconds / 60))}m ago`;
-    if (seconds < 86400) return `${Math.floor(seconds / 3600)}h ago`;
-    if (seconds < 604800) return `${Math.floor(seconds / 86400)}d ago`;
-    return new Date(iso).toLocaleDateString('en-GB', { day: 'numeric', month: 'short' });
-}
 
 export default function PostCard({ post }: { post: PostSummary }) {
     return (
@@ -45,11 +38,11 @@ export default function PostCard({ post }: { post: PostSummary }) {
                     </div>
                 </div>
                 {post.photo_url && (
-                    <div className="hidden shrink-0 rounded-2xl bg-foreground/5 p-1 ring-1 ring-border/70 sm:block">
+                    <div className="shrink-0 rounded-2xl bg-foreground/5 p-1 ring-1 ring-border/70">
                         <img
                             src={post.photo_url}
                             alt=""
-                            className="size-24 rounded-[calc(1rem-0.25rem)] object-cover transition-transform duration-700 ease-fluid group-hover:scale-[1.03]"
+                            className="size-20 rounded-[calc(1rem-0.25rem)] object-cover transition-transform duration-700 ease-fluid group-hover:scale-[1.03] sm:size-24"
                         />
                     </div>
                 )}

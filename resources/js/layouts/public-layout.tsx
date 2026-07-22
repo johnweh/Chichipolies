@@ -2,6 +2,7 @@ import { ArrowUpRight, Moon, SignOut, Sun } from '@phosphor-icons/react';
 import { Link, usePage } from '@inertiajs/react';
 import type { PropsWithChildren } from 'react';
 import BottomNav from '@/components/bottom-nav';
+import FlashToast from '@/components/flash-toast';
 import { useAppearance } from '@/hooks/use-appearance';
 
 export default function PublicLayout({ children }: PropsWithChildren) {
@@ -93,6 +94,7 @@ export default function PublicLayout({ children }: PropsWithChildren) {
             </footer>
 
             <BottomNav />
+            <FlashToast />
         </div>
     );
 }
