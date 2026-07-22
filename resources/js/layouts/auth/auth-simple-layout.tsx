@@ -26,8 +26,8 @@ export default function AuthSimpleLayout({ children, title, description }: AuthL
                     </div>
                 </div>
 
-                <div className="rounded-[1.75rem] bg-foreground/[0.03] p-1.5 ring-1 ring-border/70">
-                    <div className="rounded-[calc(1.75rem-0.375rem)] bg-card p-6 shadow-[inset_0_1px_1px_hsl(40,30%,100%,0.4)] dark:shadow-none">
+                <div className="rounded-3xl bg-card shadow-soft ring-1 ring-border/60">
+                    <div className="rounded-3xl bg-card p-6">
                         {children}
                     </div>
                 </div>

@@ -73,10 +73,10 @@ export default function PostCreate({ categories, counties }: Props) {
             </Reveal>
 
             <Reveal delay={120} className="mt-8">
-                <div className="rounded-[1.75rem] bg-foreground/[0.03] p-1.5 ring-1 ring-border/70">
+                <div className="rounded-3xl bg-card shadow-soft ring-1 ring-border/60">
                     <form
                         onSubmit={submit}
-                        className="flex flex-col gap-5 rounded-[calc(1.75rem-0.375rem)] bg-card p-5 shadow-[inset_0_1px_1px_hsl(40,30%,100%,0.4)] sm:p-7 dark:shadow-none"
+                        className="flex flex-col gap-5 rounded-3xl bg-card p-5 sm:p-7"
                     >
                         <div>
                             {label('Title')}

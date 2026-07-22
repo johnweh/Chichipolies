@@ -28,7 +28,7 @@ export default function PublicLayout({ children }: PropsWithChildren) {
     return (
         <div className="min-h-[100dvh] bg-background pb-20 sm:pb-0">
             <header className="fixed inset-x-0 top-0 z-40 px-3 pt-3 sm:pt-5">
-                <div className="mx-auto flex w-full max-w-2xl items-center gap-1 rounded-full border border-border/70 bg-card/80 py-1.5 pr-1.5 pl-4 shadow-[0_8px_30px_-12px_hsl(30,20%,20%,0.18)] backdrop-blur-xl">
+                <div className="mx-auto flex w-full max-w-2xl items-center gap-1 rounded-full border border-border/70 bg-card/80 py-1.5 pr-1.5 pl-4 shadow-[0_8px_30px_-12px_hsl(224,30%,25%,0.2)] backdrop-blur-xl">
                     <Link href="/" className="font-display text-lg font-semibold tracking-tight text-foreground">
                         Chichipolies
                     </Link>

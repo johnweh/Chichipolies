@@ -34,8 +34,8 @@ export default function ReportDialog({ postId, reasons }: { postId: number; reas
                     aria-modal="true"
                     aria-label="Report abuse"
                 >
-                    <div className="w-full max-w-sm rounded-[1.5rem] bg-foreground/[0.04] p-1.5 ring-1 ring-border/70" onClick={(e) => e.stopPropagation()}>
-                        <form onSubmit={submit} className="rounded-[calc(1.5rem-0.375rem)] bg-card p-5">
+                    <div className="w-full max-w-sm rounded-3xl bg-card shadow-soft ring-1 ring-border/60" onClick={(e) => e.stopPropagation()}>
+                        <form onSubmit={submit} className="rounded-3xl bg-card p-5">
                             <h3 className="font-display text-lg font-semibold text-foreground">Report this story</h3>
                             <p className="mt-1 text-xs text-muted-foreground">Our moderators review every report.</p>
 

@@ -127,8 +127,8 @@ export default function PostShow({ post, userVote, reportReasons }: Props) {
 
                 <Reveal delay={100}>
                     {post.photo_url && (
-                        <div className="mt-6 rounded-[1.75rem] bg-foreground/[0.03] p-1.5 ring-1 ring-border/70">
-                            <img src={post.photo_url} alt={post.title} className="w-full rounded-[calc(1.75rem-0.375rem)] object-cover" />
+                        <div className="mt-6 rounded-3xl bg-card shadow-soft ring-1 ring-border/60">
+                            <img src={post.photo_url} alt={post.title} className="w-full rounded-3xl object-cover" />
                         </div>
                     )}
                     {post.video_url && (
@@ -141,8 +141,8 @@ export default function PostShow({ post, userVote, reportReasons }: Props) {
                 </Reveal>
 
                 <Reveal delay={150}>
-                    <div className="mt-10 rounded-[1.75rem] bg-foreground/[0.03] p-1.5 ring-1 ring-border/70">
-                        <div className="rounded-[calc(1.75rem-0.375rem)] bg-card px-5 py-5 shadow-[inset_0_1px_1px_hsl(40,30%,100%,0.4)] sm:px-6 dark:shadow-none">
+                    <div className="mt-10 rounded-3xl bg-card shadow-soft ring-1 ring-border/60">
+                        <div className="rounded-3xl bg-card px-5 py-5 sm:px-6">
                             <div className="flex items-center justify-between gap-3">
                                 <p className="text-[10px] font-semibold tracking-[0.2em] text-muted-foreground uppercase">Community verification</p>
                                 <VerificationBadge status={post.verification_status} />

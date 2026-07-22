@@ -5,8 +5,8 @@ export default function VideoEmbed({ url }: { url: string }) {
 
     if (youtube) {
         return (
-            <div className="rounded-[1.75rem] bg-foreground/[0.03] p-1.5 ring-1 ring-border/70">
-                <div className="aspect-video overflow-hidden rounded-[calc(1.75rem-0.375rem)]">
+            <div className="rounded-3xl bg-card shadow-soft ring-1 ring-border/60">
+                <div className="aspect-video overflow-hidden rounded-3xl">
                     <iframe src={`https://www.youtube.com/embed/${youtube[1]}`} className="h-full w-full" allowFullScreen title="Video" />
                 </div>
             </div>

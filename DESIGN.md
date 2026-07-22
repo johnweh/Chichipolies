@@ -1,16 +1,16 @@
 # Chichipolies — Design System
 
-Editorial warmth: cream paper, ink text, one navy accent, serif display type. Both light and dark modes are first-class (light = warm paper, dark = deep flag-navy "Liberian night").
+Crisp editorial: cool near-white surfaces, floating cards with soft navy-tinted shadows, one flag-blue accent, serif display type. Both modes are first-class (light = crisp and airy, dark = deep flag-navy "Liberian night").
 
 ## Colour
 
 Tokens live in `resources/css/app.css` (`:root` / `.dark`). Strategy: **restrained** — tinted warm neutrals + one navy accent.
 
-- Light: background `hsl(40 33% 97%)` (cream), card `hsl(40 30% 99%)`, foreground `hsl(30 12% 12%)` (warm ink), border `hsl(38 16% 88%)`.
+- Light: background `hsl(220 20% 98%)` cool near-white, card `hsl(220 40% 99.6%)`, foreground `hsl(224 20% 13%)` cool ink, border `hsl(220 14% 89%)`.
 - Dark ("Liberian night"): background `hsl(224 25% 7%)` deep flag-navy, card `hsl(224 22% 10%)`, foreground `hsl(220 22% 92%)` star-white; all dark neutrals are navy-tinted (the dark theme is the blue canton).
 - Primary (single accent): `hsl(220 62% 28%)` Liberian-flag blue (light) / `hsl(219 58% 70%)` (dark). Brand hex for meta/manifest: `#1B3874`. Flag red is deliberately NOT a brand colour: red stays semantic-only (Likely False / report / ban).
 - Semantic status only: emerald (Likely True), red (Likely False), amber (Disputed), muted grey (Unverified). Always at /10–/20 tints with matching text colour, never saturated fills except active vote buttons.
-- Light-mode greys are warm-tinted; dark-mode greys are navy-tinted. Never `#000`/`#fff`.
+- All neutrals are navy-tinted in both modes. Never `#000`/`#fff`.
 
 ## Typography
 
@@ -21,17 +21,15 @@ Tokens live in `resources/css/app.css` (`:root` / `.dark`). Strategy: **restrain
 - Body copy: max `65ch`, `leading-[1.75]` for article text.
 - **Banned:** Inter, Roboto, Arial, system default stacks as the visible face.
 
-## Surfaces — the double-bezel
+## Surfaces — floating cards
 
-Major containers (list shell, panels, forms, media, dialogs) use the nested pattern:
+Major containers (list shell, panels, forms, media, dialogs) are single floating cards:
 
 ```
-outer: rounded-[1.75rem] bg-foreground/[0.03] p-1.5 ring-1 ring-border/70
-inner: rounded-[calc(1.75rem-0.375rem)] bg-card
-       + shadow-[inset_0_1px_1px_hsl(40,30%,100%,0.4)] (light only)
+rounded-3xl bg-card shadow-soft ring-1 ring-border/60
 ```
 
-List rows separate with `divide-y divide-border/70` hairlines — no bordered cards, no nested cards.
+`shadow-soft` (utility in app.css) is a soft, diffused, navy-tinted ambient shadow — never harsh black drops. List rows separate with `divide-y divide-border/70` hairlines — no bordered inner cards, no nested cards.
 
 ## Iconography
 

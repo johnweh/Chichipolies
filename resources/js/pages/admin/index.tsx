@@ -69,8 +69,8 @@ export default function AdminIndex({ posts, users, reports }: Props) {
             </Reveal>
 
             <Reveal delay={160} className="mt-5">
-                <div className="rounded-[1.75rem] bg-foreground/[0.03] p-1.5 ring-1 ring-border/70">
-                    <div className="divide-y divide-border/70 overflow-hidden rounded-[calc(1.75rem-0.375rem)] bg-card">
+                <div className="rounded-3xl bg-card shadow-soft ring-1 ring-border/60">
+                    <div className="divide-y divide-border/70 overflow-hidden rounded-3xl bg-card">
                         {tab === 'Posts' &&
                             posts.data.map((post) => (
                                 <div key={post.id} className="flex items-center gap-3 px-5 py-4 text-sm">

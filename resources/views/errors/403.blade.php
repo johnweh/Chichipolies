@@ -12,7 +12,7 @@
         * { margin: 0; box-sizing: border-box; }
         body {
             min-height: 100dvh; display: flex; align-items: center; justify-content: center;
-            background: hsl(40, 33%, 97%); color: hsl(30, 12%, 12%);
+            background: hsl(220, 20%, 98%); color: hsl(224, 20%, 13%);
             font-family: 'Plus Jakarta Sans', ui-sans-serif, system-ui, sans-serif;
             padding: 24px; text-align: center;
         }

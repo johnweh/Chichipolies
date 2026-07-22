@@ -6,8 +6,8 @@ import type { PostSummary } from '@/types/chichipolies';
 export default function FeaturedPost({ post }: { post: PostSummary }) {
     return (
         <Link href={`/post/${post.id}`} className="group block">
-            <article className="rounded-[1.75rem] bg-foreground/[0.03] p-1.5 ring-1 ring-border/70">
-                <div className="overflow-hidden rounded-[calc(1.75rem-0.375rem)] bg-card shadow-[inset_0_1px_1px_hsl(40,30%,100%,0.4)] dark:shadow-none">
+            <article className="rounded-3xl bg-card shadow-soft ring-1 ring-border/60">
+                <div className="overflow-hidden rounded-3xl">
                     {post.photo_url && (
                         <div className="overflow-hidden">
                             <img

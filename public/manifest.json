@@ -4,7 +4,7 @@
     "description": "Liberia's community-driven news platform.",
     "start_url": "/",
     "display": "standalone",
-    "background_color": "#FAF7F0",
+    "background_color": "#F7F8FA",
     "theme_color": "#1B3874",
     "icons": [
         { "src": "/icon-192.png", "sizes": "192x192", "type": "image/png" },

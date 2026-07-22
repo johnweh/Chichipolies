@@ -115,16 +115,16 @@ export default function FeedIndex({ posts, filters, categories, counties }: Prop
 
             <Reveal delay={heroPost ? 220 : 180} className="mt-6">
                 {listPosts.length > 0 ? (
-                    <div className="rounded-[1.75rem] bg-foreground/[0.03] p-1.5 ring-1 ring-border/70">
-                        <div className="divide-y divide-border/70 overflow-hidden rounded-[calc(1.75rem-0.375rem)] bg-card shadow-[inset_0_1px_1px_hsl(40,30%,100%,0.4)] dark:shadow-none">
+                    <div className="rounded-3xl bg-card shadow-soft ring-1 ring-border/60">
+                        <div className="divide-y divide-border/70 overflow-hidden rounded-3xl">
                             {listPosts.map((post) => (
                                 <PostCard key={post.id} post={post} />
                             ))}
                         </div>
                     </div>
                 ) : posts.data.length === 0 ? (
-                    <div className="rounded-[1.75rem] bg-foreground/[0.03] p-1.5 ring-1 ring-border/70">
-                        <div className="flex flex-col items-center rounded-[calc(1.75rem-0.375rem)] bg-card px-6 py-20 text-center">
+                    <div className="rounded-3xl bg-card shadow-soft ring-1 ring-border/60">
+                        <div className="flex flex-col items-center rounded-3xl bg-card px-6 py-20 text-center">
                             <span className="flex size-12 items-center justify-center rounded-full bg-secondary text-muted-foreground">
                                 <Newspaper weight="light" className="size-6" />
                             </span>

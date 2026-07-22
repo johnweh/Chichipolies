@@ -38,11 +38,11 @@ export default function PostCard({ post }: { post: PostSummary }) {
                     </div>
                 </div>
                 {post.photo_url && (
-                    <div className="shrink-0 rounded-2xl bg-foreground/5 p-1 ring-1 ring-border/70">
+                    <div className="shrink-0 overflow-hidden rounded-xl ring-1 ring-border/60">
                         <img
                             src={post.photo_url}
                             alt=""
-                            className="size-20 rounded-[calc(1rem-0.25rem)] object-cover transition-transform duration-700 ease-fluid group-hover:scale-[1.03] sm:size-24"
+                            className="size-20 rounded-xl object-cover transition-transform duration-700 ease-fluid group-hover:scale-[1.03] sm:size-24"
                         />
                     </div>
                 )}
