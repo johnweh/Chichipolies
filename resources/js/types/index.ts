@@ -1,5 +1,3 @@
-import { LucideIcon } from 'lucide-react';
-
 export interface Auth {
     user: User;
 }
@@ -17,7 +15,7 @@ export interface NavGroup {
 export interface NavItem {
     title: string;
     url: string;
-    icon?: LucideIcon | null;
+    icon?: React.ComponentType<{ className?: string }> | null;
     isActive?: boolean;
 }
 
@@ -33,6 +31,7 @@ export interface User {
     name: string;
     email: string;
     avatar?: string;
+    is_admin?: boolean;
     email_verified_at: string | null;
     created_at: string;
     updated_at: string;

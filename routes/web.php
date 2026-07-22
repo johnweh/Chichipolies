@@ -39,7 +39,10 @@ Route::middleware(['auth', 'throttle:10,1'])->prefix('ai')->name('ai.')->group(f
 });
 
 Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(function () {
-    Route::get('/', [DashboardController::class, 'index'])->name('index');
+    Route::get('/', fn () => redirect()->route('admin.posts.index'))->name('index');
+    Route::get('/posts', [DashboardController::class, 'posts'])->name('posts.index');
+    Route::get('/users', [DashboardController::class, 'users'])->name('users.index');
+    Route::get('/reports', [DashboardController::class, 'reports'])->name('reports.index');
     Route::delete('/posts/{post}', [App\Http\Controllers\Admin\PostController::class, 'destroy'])->name('posts.destroy');
     Route::post('/users/{user}/ban', [UserController::class, 'ban'])->name('users.ban');
     Route::post('/users/{user}/unban', [UserController::class, 'unban'])->name('users.unban');

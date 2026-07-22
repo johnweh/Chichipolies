@@ -30,5 +30,7 @@ it('blocks non-admins from admin routes', function () {
 it('allows admins into admin routes', function () {
     $this->actingAs(User::factory()->admin()->create());
 
-    $this->get('/admin')->assertOk();
+    $this->get('/admin')->assertRedirect(route('admin.posts.index'));
+
+    $this->get('/admin/posts')->assertOk();
 });
