@@ -31,7 +31,14 @@ const tabs = [
 
 type TabId = (typeof tabs)[number]['id'];
 
-export default function FeedIndex({ posts, filters, categories, counties, topDiscussions, topContributors }: Props) {
+export default function FeedIndex({
+    posts,
+    filters = {},
+    categories = [],
+    counties = [],
+    topDiscussions = [],
+    topContributors = [],
+}: Props) {
     const [search, setSearch] = useState(filters.search ?? '');
     const { auth } = usePage<{ auth: { user: unknown | null } }>().props;
     const activeTab = (filters.tab ?? 'stories') as TabId;
@@ -123,9 +130,9 @@ export default function FeedIndex({ posts, filters, categories, counties, topDis
                             </form>
                         </div>
 
-                        {posts.data.length > 0 ? (
+                        {(posts?.data ?? []).length > 0 ? (
                             <div className="divide-y divide-border/70">
-                                {posts.data.map((post) => (
+                                {(posts?.data ?? []).map((post) => (
                                     <PostCard key={post.id} post={post} />
                                 ))}
                             </div>
@@ -150,9 +157,9 @@ export default function FeedIndex({ posts, filters, categories, counties, topDis
                         )}
                     </div>
 
-                    {posts.links.length > 3 && (
+                    {(posts?.links ?? []).length > 3 && (
                         <nav className="flex flex-wrap items-center justify-center gap-1" aria-label="Pagination">
-                            {posts.links.map((link, i) => {
+                            {(posts?.links ?? []).map((link, i) => {
                                 if (!link.url) return null;
                                 const isPrev = link.label.includes('laquo');
                                 const isNext = link.label.includes('raquo');

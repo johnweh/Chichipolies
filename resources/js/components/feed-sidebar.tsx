@@ -16,9 +16,9 @@ interface FeedSidebarProps {
 }
 
 export default function FeedSidebar({
-    topDiscussions,
-    categories,
-    topContributors,
+    topDiscussions = [],
+    categories = [],
+    topContributors = [],
     activeCategory,
     onCategoryClick,
 }: FeedSidebarProps) {

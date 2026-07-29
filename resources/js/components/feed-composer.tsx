@@ -8,7 +8,7 @@ interface FeedComposerProps {
     activeCategory?: string;
 }
 
-export default function FeedComposer({ categories, isAuthenticated, onCategoryClick, activeCategory }: FeedComposerProps) {
+export default function FeedComposer({ categories = [], isAuthenticated, onCategoryClick, activeCategory }: FeedComposerProps) {
     const suggestedTags = categories.slice(0, 3);
 
     return (
