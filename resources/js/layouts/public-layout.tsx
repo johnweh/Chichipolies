@@ -15,6 +15,7 @@ export default function PublicLayout({ children }: PropsWithChildren) {
     const dark =
         appearance === 'dark' ||
         (appearance === 'system' && typeof window !== 'undefined' && window.matchMedia('(prefers-color-scheme: dark)').matches);
+    const year = new Date().getFullYear();
 
     const navLink = (href: string, label: string) => {
         const active = path === href;
@@ -27,17 +28,23 @@ export default function PublicLayout({ children }: PropsWithChildren) {
                 }`}
             >
                 {label}
-                {active && <span className="absolute inset-x-2 bottom-3 h-0.5 rounded-full bg-community" />}
+                {active && <span className="absolute inset-x-2 bottom-3 h-0.5 rounded-full bg-nav-foreground/80" />}
             </Link>
         );
     };
+
+    const footerLink = (href: string, label: string) => (
+        <Link href={href} className="text-sm text-nav-foreground/75 transition-colors hover:text-nav-foreground">
+            {label}
+        </Link>
+    );
 
     return (
         <div className="min-h-[100dvh] bg-background pb-20 sm:pb-0">
             <header className="sticky top-0 z-40 bg-nav text-nav-foreground">
                 <div className="mx-auto flex max-w-7xl items-center px-4 sm:px-6">
                     <Link href="/" className="group flex shrink-0 items-center gap-2.5 py-4" aria-label="Chichipolies home">
-                        <BrandMark className="size-9 rounded-lg transition-transform duration-300 ease-fluid group-hover:scale-105" />
+                        <BrandMark variant="onNav" className="size-9 rounded-lg transition-transform duration-300 ease-fluid group-hover:scale-105" />
                         <span className="text-lg font-semibold tracking-tight">Chichipolies</span>
                     </Link>
 
@@ -51,28 +58,28 @@ export default function PublicLayout({ children }: PropsWithChildren) {
                         <button
                             type="button"
                             aria-label="Search"
-                            className="hidden rounded-full p-2.5 text-nav-foreground/70 transition-colors hover:bg-white/10 hover:text-nav-foreground sm:flex"
+                            className="hidden rounded-full p-2.5 text-nav-foreground/70 transition-colors hover:bg-nav-foreground/10 hover:text-nav-foreground sm:flex"
                         >
                             <MagnifyingGlass weight="light" className="size-5" />
                         </button>
                         <button
                             type="button"
                             aria-label="Favorites"
-                            className="hidden rounded-full p-2.5 text-nav-foreground/70 transition-colors hover:bg-white/10 hover:text-nav-foreground sm:flex"
+                            className="hidden rounded-full p-2.5 text-nav-foreground/70 transition-colors hover:bg-nav-foreground/10 hover:text-nav-foreground sm:flex"
                         >
                             <Heart weight="light" className="size-5" />
                         </button>
                         <button
                             type="button"
                             aria-label="Notifications"
-                            className="hidden rounded-full p-2.5 text-nav-foreground/70 transition-colors hover:bg-white/10 hover:text-nav-foreground sm:flex"
+                            className="hidden rounded-full p-2.5 text-nav-foreground/70 transition-colors hover:bg-nav-foreground/10 hover:text-nav-foreground sm:flex"
                         >
                             <Bell weight="light" className="size-5" />
                         </button>
                         <button
                             onClick={() => updateAppearance(dark ? 'light' : 'dark')}
                             aria-label="Toggle theme"
-                            className="rounded-full p-2.5 text-nav-foreground/70 transition-colors hover:bg-white/10 hover:text-nav-foreground"
+                            className="rounded-full p-2.5 text-nav-foreground/70 transition-colors hover:bg-nav-foreground/10 hover:text-nav-foreground"
                         >
                             {dark ? <Sun weight="light" className="size-5" /> : <Moon weight="light" className="size-5" />}
                         </button>
@@ -81,7 +88,7 @@ export default function PublicLayout({ children }: PropsWithChildren) {
                         ) : (
                             <Link
                                 href="/login"
-                                className="ml-1 rounded-lg bg-community px-4 py-2 text-sm font-semibold text-community-foreground transition-opacity hover:opacity-90"
+                                className="ml-1 rounded-full bg-nav-foreground px-4 py-2 text-sm font-semibold text-nav transition-opacity hover:opacity-90"
                             >
                                 Sign in
                             </Link>
@@ -92,21 +99,40 @@ export default function PublicLayout({ children }: PropsWithChildren) {
 
             <main className="mx-auto w-full max-w-7xl px-4 py-6 sm:px-6 sm:py-8">{children}</main>
 
-            <footer className="hidden border-t border-border/60 sm:block">
-                <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-8 text-xs text-muted-foreground">
-                    <span className="flex items-center gap-2">
-                        <BrandMark className="size-5 rounded-md" charClass="text-[10px]" starClass="top-0.5 right-0.5 size-1" />
-                        <span className="text-sm font-semibold text-foreground">Chichipolies</span>
-                    </span>
-                    <div className="flex gap-5">
-                        <Link href="/about" className="transition-colors hover:text-foreground">
-                            About
-                        </Link>
-                        <Link href="/about" className="transition-colors hover:text-foreground">
-                            Community guidelines
-                        </Link>
+            <footer className="mt-8 hidden bg-nav text-nav-foreground sm:block">
+                <div className="mx-auto max-w-7xl px-6 py-12">
+                    <div className="grid gap-10 sm:grid-cols-[1.5fr_1fr_1fr]">
+                        <div className="space-y-4">
+                            <Link href="/" className="group inline-flex items-center gap-2.5" aria-label="Chichipolies home">
+                                <BrandMark variant="onNav" className="size-9 rounded-lg transition-transform duration-300 ease-fluid group-hover:scale-105" />
+                                <span className="text-lg font-semibold tracking-tight">Chichipolies</span>
+                            </Link>
+                            <p className="max-w-sm text-sm leading-relaxed text-nav-foreground/70">
+                                Liberia&rsquo;s community-driven news platform. Citizens report what is happening across all 15
+                                counties, and the community verifies what is true.
+                            </p>
+                        </div>
+
+                        <div>
+                            <p className="text-[11px] font-semibold tracking-[0.12em] text-nav-foreground/50 uppercase">Explore</p>
+                            <nav className="mt-4 flex flex-col gap-2.5">
+                                {footerLink('/', 'Feed')}
+                                {footerLink('/about', 'About')}
+                                {footerLink('/submit', 'Submit a story')}
+                            </nav>
+                        </div>
+
+                        <div>
+                            <p className="text-[11px] font-semibold tracking-[0.12em] text-nav-foreground/50 uppercase">Community</p>
+                            <nav className="mt-4 flex flex-col gap-2.5">
+                                {footerLink('/about', 'Community guidelines')}
+                                {footerLink('/login', 'Sign in')}
+                                {footerLink('/register', 'Create account')}
+                            </nav>
+                        </div>
                     </div>
-                    <span>Liberia&rsquo;s community news</span>
+
+                    <p className="mt-10 text-xs text-nav-foreground/50">&copy; {year} Chichipolies. All rights reserved.</p>
                 </div>
             </footer>
 

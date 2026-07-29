@@ -62,8 +62,6 @@
 
     --color-nav: var(--nav);
     --color-nav-foreground: var(--nav-foreground);
-    --color-community: var(--community);
-    --color-community-foreground: var(--community-foreground);
 }
 
 /*
@@ -118,10 +116,8 @@
     --sidebar-accent-foreground: hsl(0, 0%, 30%);
     --sidebar-border: hsl(0, 0%, 91%);
     --sidebar-ring: hsl(217.2, 91.2%, 59.8%);
-    --nav: hsl(340, 28%, 22%);
-    --nav-foreground: hsl(0, 0%, 98%);
-    --community: hsl(12, 100%, 61%);
-    --community-foreground: hsl(0, 0%, 100%);
+    --nav: hsl(220, 62%, 28%);
+    --nav-foreground: hsl(40, 33%, 98%);
 }
 
 .dark {
@@ -157,10 +153,8 @@
     --sidebar-accent-foreground: hsl(240, 4.8%, 95.9%);
     --sidebar-border: hsl(0, 0%, 15.9%);
     --sidebar-ring: hsl(217.2, 91.2%, 59.8%);
-    --nav: hsl(340, 24%, 14%);
-    --nav-foreground: hsl(0, 0%, 95%);
-    --community: hsl(12, 95%, 58%);
-    --community-foreground: hsl(0, 0%, 100%);
+    --nav: hsl(224, 22%, 12%);
+    --nav-foreground: hsl(220, 22%, 92%);
 }
 
 @layer base {

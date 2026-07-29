@@ -85,12 +85,12 @@ export default function FeedIndex({
                                         type="button"
                                         onClick={() => applyFilters({ tab: id === 'stories' ? undefined : id })}
                                         className={`relative flex items-center gap-1.5 px-4 py-3.5 text-sm font-medium transition-colors ${
-                                            active ? 'text-community' : 'text-muted-foreground hover:text-foreground'
+                                            active ? 'text-primary' : 'text-muted-foreground hover:text-foreground'
                                         }`}
                                     >
                                         <Icon weight={active ? 'fill' : 'light'} className="size-4" />
                                         {label}
-                                        {active && <span className="absolute inset-x-2 bottom-0 h-0.5 rounded-full bg-community" />}
+                                        {active && <span className="absolute inset-x-2 bottom-0 h-0.5 rounded-full bg-primary" />}
                                     </button>
                                 );
                             })}
@@ -149,7 +149,7 @@ export default function FeedIndex({
                                 </p>
                                 <Link
                                     href={auth.user ? '/submit' : '/login'}
-                                    className="mt-6 rounded-lg bg-community px-5 py-2 text-sm font-semibold text-community-foreground transition-opacity hover:opacity-90"
+                                    className="mt-6 rounded-lg bg-primary px-5 py-2 text-sm font-semibold text-primary-foreground transition-opacity hover:opacity-90"
                                 >
                                     Post a story
                                 </Link>
@@ -170,7 +170,7 @@ export default function FeedIndex({
                                         href={link.url}
                                         className={`flex h-9 min-w-9 items-center justify-center rounded-lg px-3 text-sm transition-all tabular-nums ${
                                             link.active
-                                                ? 'bg-community font-semibold text-community-foreground'
+                                                ? 'bg-primary font-semibold text-primary-foreground'
                                                 : 'text-muted-foreground hover:bg-secondary hover:text-foreground'
                                         }`}
                                     >

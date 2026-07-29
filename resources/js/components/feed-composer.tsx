@@ -15,7 +15,7 @@ export default function FeedComposer({ categories = [], isAuthenticated, onCateg
         <div className="overflow-hidden rounded-2xl bg-card shadow-soft ring-1 ring-border/60">
             <div className="flex items-center justify-between border-b border-border/60 px-5 py-4">
                 <div className="flex items-center gap-2.5">
-                    <span className="flex size-8 items-center justify-center rounded-lg bg-community/10 text-community">
+                    <span className="flex size-8 items-center justify-center rounded-lg bg-primary/10 text-primary">
                         <UsersThree weight="fill" className="size-4" />
                     </span>
                     <h2 className="text-base font-semibold text-foreground">Community</h2>
@@ -37,7 +37,7 @@ export default function FeedComposer({ categories = [], isAuthenticated, onCateg
                                     onClick={() => onCategoryClick(tag)}
                                     className={`rounded-full px-3 py-1 text-xs font-medium transition-colors ${
                                         activeCategory === tag
-                                            ? 'bg-community text-community-foreground'
+                                            ? 'bg-primary text-primary-foreground'
                                             : 'bg-secondary text-muted-foreground hover:text-foreground'
                                     }`}
                                 >
@@ -46,7 +46,7 @@ export default function FeedComposer({ categories = [], isAuthenticated, onCateg
                             ))}
                             <Link
                                 href="/submit"
-                                className="rounded-full border border-dashed border-border px-3 py-1 text-xs font-medium text-muted-foreground transition-colors hover:border-community hover:text-community"
+                                className="rounded-full border border-dashed border-border px-3 py-1 text-xs font-medium text-muted-foreground transition-colors hover:border-primary hover:text-primary"
                             >
                                 + Add story
                             </Link>
@@ -74,14 +74,14 @@ export default function FeedComposer({ categories = [], isAuthenticated, onCateg
                 {isAuthenticated ? (
                     <Link
                         href="/submit"
-                        className="rounded-lg bg-community px-5 py-2 text-sm font-semibold text-community-foreground transition-opacity hover:opacity-90 active:scale-[0.98]"
+                        className="rounded-lg bg-primary px-5 py-2 text-sm font-semibold text-primary-foreground transition-opacity hover:opacity-90 active:scale-[0.98]"
                     >
                         Post
                     </Link>
                 ) : (
                     <Link
                         href="/login"
-                        className="rounded-lg bg-community px-5 py-2 text-sm font-semibold text-community-foreground transition-opacity hover:opacity-90 active:scale-[0.98]"
+                        className="rounded-lg bg-primary px-5 py-2 text-sm font-semibold text-primary-foreground transition-opacity hover:opacity-90 active:scale-[0.98]"
                     >
                         Sign in to post
                     </Link>

@@ -17,7 +17,7 @@ export default function PostCard({ post }: { post: PostSummary }) {
                         <span aria-hidden> &middot; </span>
                         {timeAgo(post.created_at)}
                     </p>
-                    <h2 className="mt-1.5 text-base leading-snug font-semibold text-foreground transition-colors group-hover:text-community">
+                    <h2 className="mt-1.5 text-base leading-snug font-semibold text-foreground transition-colors group-hover:text-primary">
                         {post.title}
                     </h2>
                     <p className="mt-1 line-clamp-2 text-sm leading-relaxed text-muted-foreground">{post.body}</p>

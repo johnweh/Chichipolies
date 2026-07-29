@@ -27,17 +27,17 @@ export default function FeedSidebar({
             <div className="rounded-2xl bg-card p-5 shadow-soft ring-1 ring-border/60">
                 <h3 className="flex items-center gap-1.5 text-sm font-semibold text-foreground">
                     Top discussion this week
-                    <Fire weight="fill" className="size-4 text-community" />
+                    <Fire weight="fill" className="size-4 text-primary" />
                 </h3>
                 <ul className="mt-4 space-y-4">
                     {topDiscussions.length > 0 ? (
                         topDiscussions.map((post) => (
                             <li key={post.id}>
                                 <Link href={`/post/${post.id}`} className="group block">
-                                    <p className="text-sm leading-snug text-foreground transition-colors group-hover:text-community">
+                                    <p className="text-sm leading-snug text-foreground transition-colors group-hover:text-primary">
                                         {post.title}
                                     </p>
-                                    <span className="mt-1 inline-flex items-center gap-1 text-xs font-medium text-muted-foreground transition-colors group-hover:text-community">
+                                    <span className="mt-1 inline-flex items-center gap-1 text-xs font-medium text-muted-foreground transition-colors group-hover:text-primary">
                                         Details
                                         <ArrowRight weight="bold" className="size-3" />
                                     </span>
@@ -60,7 +60,7 @@ export default function FeedSidebar({
                             onClick={() => onCategoryClick(category)}
                             className={`rounded-full px-3 py-1.5 text-xs font-medium transition-colors ${
                                 activeCategory === category
-                                    ? 'bg-community text-community-foreground'
+                                    ? 'bg-primary text-primary-foreground'
                                     : 'bg-secondary text-muted-foreground hover:text-foreground'
                             }`}
                         >
@@ -71,7 +71,7 @@ export default function FeedSidebar({
                 <button
                     type="button"
                     onClick={() => onCategoryClick('')}
-                    className="mt-4 text-xs font-semibold text-community transition-opacity hover:opacity-80"
+                    className="mt-4 text-xs font-semibold text-primary transition-opacity hover:opacity-80"
                 >
                     See more topics
                 </button>

@@ -14,7 +14,7 @@ export default function BottomNav() {
     ];
 
     return (
-        <nav className="fixed inset-x-0 bottom-0 z-40 border-t border-border bg-card/85 pb-[env(safe-area-inset-bottom)] backdrop-blur-xl sm:hidden">
+        <nav className="fixed inset-x-0 bottom-0 z-40 bg-card/90 pb-[env(safe-area-inset-bottom)] shadow-[0_-10px_40px_-18px_hsl(224,40%,25%,0.18)] backdrop-blur-xl sm:hidden">
             <div className="flex">
                 {items.map(({ href, label, Icon }) => {
                     const active = path === href;
@@ -24,12 +24,12 @@ export default function BottomNav() {
                             key={href}
                             href={href}
                             className={`relative flex flex-1 flex-col items-center gap-0.5 py-2.5 text-[11px] font-medium transition-colors duration-300 ease-fluid ${
-                                active ? 'text-community' : 'text-muted-foreground'
+                                active ? 'text-primary' : 'text-muted-foreground'
                             }`}
                         >
                             <Icon weight={active ? 'fill' : 'light'} className="size-[22px]" />
                             {label}
-                            {active && <span className="absolute -top-px h-0.5 w-8 rounded-full bg-community" />}
+                            {active && <span className="absolute -top-px h-0.5 w-8 rounded-full bg-primary" />}
                         </Link>
                     );
                 })}
