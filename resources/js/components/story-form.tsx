@@ -5,12 +5,13 @@ import { useState } from 'react';
 interface StoryFormProps {
     categories: string[];
     counties: string[];
+    isAdmin?: boolean;
 }
 
 const field =
     'w-full rounded-2xl border border-input bg-card px-4 py-2.5 text-sm text-foreground transition-all duration-300 ease-fluid focus:border-ring focus:ring-2 focus:ring-ring/25 focus:outline-none';
 
-export default function StoryForm({ categories, counties }: StoryFormProps) {
+export default function StoryForm({ categories, counties, isAdmin = false }: StoryFormProps) {
     const { data, setData, post, processing, errors } = useForm<{
         title: string;
         body: string;
@@ -18,7 +19,8 @@ export default function StoryForm({ categories, counties }: StoryFormProps) {
         county: string;
         photo: File | null;
         video_url: string;
-    }>({ title: '', body: '', category: '', county: '', photo: null, video_url: '' });
+        is_official: boolean;
+    }>({ title: '', body: '', category: '', county: '', photo: null, video_url: '', is_official: false });
 
     const [improving, setImproving] = useState(false);
 
@@ -129,6 +131,23 @@ export default function StoryForm({ categories, counties }: StoryFormProps) {
                 />
                 {error('video_url')}
             </div>
+
+            {isAdmin && (
+                <label className="flex cursor-pointer items-start gap-3 rounded-2xl border border-input bg-background/50 px-4 py-3.5">
+                    <input
+                        type="checkbox"
+                        checked={data.is_official}
+                        onChange={(e) => setData('is_official', e.target.checked)}
+                        className="mt-0.5 size-4 rounded border-input text-primary focus:ring-ring/25"
+                    />
+                    <span>
+                        <span className="block text-sm font-medium text-foreground">Post as official platform story</span>
+                        <span className="mt-0.5 block text-xs text-muted-foreground">
+                            Appears under the Official tab and is attributed to Chichipolies.
+                        </span>
+                    </span>
+                </label>
+            )}
 
             <div className="mt-1 flex flex-col gap-2.5 sm:flex-row sm:items-center">
                 <button

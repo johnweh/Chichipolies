@@ -13,6 +13,7 @@ class PostFactory extends Factory
     {
         return [
             'user_id' => User::factory(),
+            'is_official' => false,
             'title' => fake()->sentence(6),
             'body' => fake()->paragraphs(3, true),
             'category' => fake()->randomElement(Category::values()),
@@ -22,5 +23,10 @@ class PostFactory extends Factory
             'true_votes' => 0,
             'false_votes' => 0,
         ];
+    }
+
+    public function official(): static
+    {
+        return $this->state(fn () => ['is_official' => true]);
     }
 }

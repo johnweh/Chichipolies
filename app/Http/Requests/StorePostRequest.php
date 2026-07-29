@@ -29,6 +29,7 @@ class StorePostRequest extends FormRequest
                 'nullable', 'url', 'max:500',
                 'regex:#^https?://(www\.)?(youtube\.com|youtu\.be|tiktok\.com|facebook\.com|fb\.watch)/#i',
             ],
+            'is_official' => ['sometimes', 'boolean'],
         ];
     }
 

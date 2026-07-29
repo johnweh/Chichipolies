@@ -23,7 +23,7 @@ export default function PostCreate({ categories, counties }: Props) {
                 <div className="px-4 py-6">
                     <Heading title="New story" description="Publish a story to the feed" />
                     <div className="max-w-2xl">
-                        <StoryForm categories={categories} counties={counties} />
+                        <StoryForm categories={categories} counties={counties} isAdmin />
                     </div>
                 </div>
             </AppLayout>

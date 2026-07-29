@@ -13,6 +13,7 @@ export interface PostSummary {
     video_url: string | null;
     true_votes: number;
     false_votes: number;
+    is_official: boolean;
     verification_status: 'Unverified' | 'Likely True' | 'Likely False' | 'Disputed';
     comments_count: number;
     created_at: string;

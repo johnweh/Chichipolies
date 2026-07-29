@@ -54,6 +54,7 @@ export default function SiteFooter() {
                         <FooterLink href="/about">About</FooterLink>
                         <FooterLink href="/submit">Submit a story</FooterLink>
                         <FooterLink href="/?tab=verified">Verified stories</FooterLink>
+                        <FooterLink href="/?tab=official">Official announcements</FooterLink>
                         <FooterLink href="/?tab=active">Active discussions</FooterLink>
                         {auth.user && (
                             <>

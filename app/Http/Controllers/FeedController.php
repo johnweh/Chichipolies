@@ -25,6 +25,8 @@ class FeedController extends Controller
                 ->orWhere('body', 'like', "%{$search}%")))
             ->when($request->filled('category'), fn ($q) => $q->where('category', $request->string('category')))
             ->when($request->filled('county'), fn ($q) => $q->where('county', $request->string('county')))
+            ->when($tab === 'official', fn ($q) => $q->where('is_official', true))
+            ->when($tab !== 'official', fn ($q) => $q->where('is_official', false))
             ->when($tab === 'active', fn ($q) => $q->has('comments'))
             ->when($tab === 'verified', fn ($q) => $q->where('true_votes', '>', 0)->whereColumn('true_votes', '>=', 'false_votes'))
             ->latest()

@@ -41,8 +41,9 @@ class PostController extends Controller
         $photoPath = $request->file('photo')?->store('posts', 'public');
 
         $post = $request->user()->posts()->create([
-            ...$request->safe()->except('photo'),
+            ...$request->safe()->except(['photo', 'is_official']),
             'photo_path' => $photoPath,
+            'is_official' => $request->boolean('is_official') && $request->user()->is_admin,
         ]);
 
         return redirect()->route('posts.show', $post)->with('success', 'Story posted!');

@@ -1,4 +1,4 @@
-import { CaretLeft, CaretRight, ChatCircle, MagnifyingGlass, Newspaper, NotePencil, ShieldCheck } from '@phosphor-icons/react';
+import { CaretLeft, CaretRight, ChatCircle, MagnifyingGlass, Newspaper, NotePencil, Seal, ShieldCheck } from '@phosphor-icons/react';
 import { Head, Link, router, usePage } from '@inertiajs/react';
 import { useState } from 'react';
 import FeedComposer from '@/components/feed-composer';
@@ -27,6 +27,7 @@ const tabs = [
     { id: 'stories', label: 'Stories', Icon: NotePencil },
     { id: 'active', label: 'Active', Icon: ChatCircle },
     { id: 'verified', label: 'Verified', Icon: ShieldCheck },
+    { id: 'official', label: 'Official', Icon: Seal },
 ] as const;
 
 type TabId = (typeof tabs)[number]['id'];
@@ -143,16 +144,20 @@ export default function FeedIndex({
                                 </span>
                                 <h2 className="mt-4 text-lg font-semibold text-foreground">No stories here yet</h2>
                                 <p className="mt-1 max-w-xs text-sm text-muted-foreground">
-                                    {hasFilters
-                                        ? 'Nothing matches these filters. Try widening your search.'
-                                        : 'Be the first to report what is happening in your county.'}
+                                    {activeTab === 'official'
+                                        ? 'Official announcements from Chichipolies will appear here.'
+                                        : hasFilters
+                                          ? 'Nothing matches these filters. Try widening your search.'
+                                          : 'Be the first to report what is happening in your county.'}
                                 </p>
-                                <Link
-                                    href={auth.user ? '/submit' : '/login'}
-                                    className="mt-6 rounded-lg bg-primary px-5 py-2 text-sm font-semibold text-primary-foreground transition-opacity hover:opacity-90"
-                                >
-                                    Post a story
-                                </Link>
+                                {activeTab !== 'official' && (
+                                    <Link
+                                        href={auth.user ? '/submit' : '/login'}
+                                        className="mt-6 rounded-lg bg-primary px-5 py-2 text-sm font-semibold text-primary-foreground transition-opacity hover:opacity-90"
+                                    >
+                                        Post a story
+                                    </Link>
+                                )}
                             </div>
                         )}
                     </div>

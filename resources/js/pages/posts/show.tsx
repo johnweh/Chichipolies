@@ -1,4 +1,4 @@
-import { ArrowLeft, ArrowUpRight, CheckCircle, PaperPlaneRight, Sparkle, XCircle } from '@phosphor-icons/react';
+import { ArrowLeft, ArrowUpRight, CheckCircle, PaperPlaneRight, Seal, Sparkle, XCircle } from '@phosphor-icons/react';
 import { Head, Link, router, useForm, usePage } from '@inertiajs/react';
 import { useState } from 'react';
 import ReportDialog from '@/components/report-dialog';
@@ -20,6 +20,7 @@ export default function PostShow({ post, userVote, reportReasons }: Props) {
     const commentForm = useForm({ body: '' });
     const [suggesting, setSuggesting] = useState(false);
     const [copied, setCopied] = useState(false);
+    const authorName = post.is_official ? 'Chichipolies' : post.user.name;
 
     const suggest = async () => {
         setSuggesting(true);
@@ -105,6 +106,12 @@ export default function PostShow({ post, userVote, reportReasons }: Props) {
                         <span className="text-primary">{post.category}</span>
                         <span aria-hidden>&middot;</span>
                         <span>{post.county}</span>
+                        {post.is_official && (
+                            <span className="inline-flex items-center gap-1 rounded-full bg-nav/10 px-2 py-0.5 text-[10px] font-semibold tracking-normal text-nav normal-case">
+                                <Seal weight="fill" className="size-3" />
+                                Official
+                            </span>
+                        )}
                         <VerificationBadge status={post.verification_status} />
                     </div>
 
@@ -114,10 +121,10 @@ export default function PostShow({ post, userVote, reportReasons }: Props) {
 
                     <div className="mt-4 flex items-center gap-2.5">
                         <span className="flex size-8 items-center justify-center rounded-xl bg-primary/10 text-xs font-bold text-primary uppercase">
-                            {post.user.name.charAt(0)}
+                            {authorName.charAt(0)}
                         </span>
                         <div className="text-xs">
-                            <p className="font-semibold text-foreground">{post.user.name}</p>
+                            <p className="font-semibold text-foreground">{authorName}</p>
                             <p className="text-muted-foreground">
                                 {new Date(post.created_at).toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' })}
                             </p>

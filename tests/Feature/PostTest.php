@@ -81,3 +81,31 @@ it('requires login to submit', function () {
     $this->get(route('posts.create'))->assertRedirect(route('login'));
     $this->post(route('posts.store'), [])->assertRedirect(route('login'));
 });
+
+it('allows admins to post official stories', function () {
+    $admin = User::factory()->admin()->create();
+
+    $this->actingAs($admin)->post(route('posts.store'), [
+        'title' => 'Platform update from Chichipolies',
+        'body' => 'We are rolling out a new feature for verified stories across all counties today.',
+        'category' => 'Other',
+        'county' => 'Montserrado',
+        'is_official' => true,
+    ])->assertRedirect();
+
+    expect(Post::query()->first()->is_official)->toBeTrue();
+});
+
+it('ignores is_official from non-admin users', function () {
+    $user = User::factory()->create();
+
+    $this->actingAs($user)->post(route('posts.store'), [
+        'title' => 'Fake official story attempt',
+        'body' => 'Someone tried to post this as an official platform announcement.',
+        'category' => 'Other',
+        'county' => 'Montserrado',
+        'is_official' => true,
+    ])->assertRedirect();
+
+    expect(Post::query()->first()->is_official)->toBeFalse();
+});

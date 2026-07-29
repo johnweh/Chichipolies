@@ -18,7 +18,7 @@ class Post extends Model
     use HasFactory;
 
     protected $fillable = [
-        'user_id', 'title', 'body', 'category', 'county',
+        'user_id', 'is_official', 'title', 'body', 'category', 'county',
         'photo_path', 'video_url', 'true_votes', 'false_votes',
     ];
 
@@ -27,6 +27,7 @@ class Post extends Model
     protected function casts(): array
     {
         return [
+            'is_official' => 'boolean',
             'category' => Category::class,
             'county' => County::class,
         ];
