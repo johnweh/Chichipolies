@@ -2,6 +2,8 @@
 
 namespace App\Http\Middleware;
 
+use App\Enums\Category;
+use App\Enums\County;
 use App\Models\Report;
 use Illuminate\Foundation\Inspiring;
 use Illuminate\Http\Request;
@@ -52,6 +54,8 @@ class HandleInertiaRequests extends Middleware
             'pendingReports' => fn (): ?int => $request->user()?->is_admin
                 ? Report::query()->where('status', 'pending')->count()
                 : null,
+            'categories' => Category::values(),
+            'counties' => County::values(),
         ];
     }
 }

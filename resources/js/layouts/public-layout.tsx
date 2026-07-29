@@ -4,6 +4,7 @@ import { type PropsWithChildren } from 'react';
 import BottomNav from '@/components/bottom-nav';
 import BrandMark from '@/components/brand-mark';
 import FlashToast from '@/components/flash-toast';
+import SiteFooter from '@/components/site-footer';
 import UserMenu from '@/components/user-menu';
 import { useAppearance } from '@/hooks/use-appearance';
 
@@ -15,7 +16,6 @@ export default function PublicLayout({ children }: PropsWithChildren) {
     const dark =
         appearance === 'dark' ||
         (appearance === 'system' && typeof window !== 'undefined' && window.matchMedia('(prefers-color-scheme: dark)').matches);
-    const year = new Date().getFullYear();
 
     const navLink = (href: string, label: string) => {
         const active = path === href;
@@ -32,12 +32,6 @@ export default function PublicLayout({ children }: PropsWithChildren) {
             </Link>
         );
     };
-
-    const footerLink = (href: string, label: string) => (
-        <Link href={href} className="text-sm text-nav-foreground/75 transition-colors hover:text-nav-foreground">
-            {label}
-        </Link>
-    );
 
     return (
         <div className="min-h-[100dvh] bg-background pb-20 sm:pb-0">
@@ -99,42 +93,7 @@ export default function PublicLayout({ children }: PropsWithChildren) {
 
             <main className="mx-auto w-full max-w-7xl px-4 py-6 sm:px-6 sm:py-8">{children}</main>
 
-            <footer className="mt-8 hidden bg-nav text-nav-foreground sm:block">
-                <div className="mx-auto max-w-7xl px-6 py-12">
-                    <div className="grid gap-10 sm:grid-cols-[1.5fr_1fr_1fr]">
-                        <div className="space-y-4">
-                            <Link href="/" className="group inline-flex items-center gap-2.5" aria-label="Chichipolies home">
-                                <BrandMark variant="onNav" className="size-9 rounded-lg transition-transform duration-300 ease-fluid group-hover:scale-105" />
-                                <span className="text-lg font-semibold tracking-tight">Chichipolies</span>
-                            </Link>
-                            <p className="max-w-sm text-sm leading-relaxed text-nav-foreground/70">
-                                Liberia&rsquo;s community-driven news platform. Citizens report what is happening across all 15
-                                counties, and the community verifies what is true.
-                            </p>
-                        </div>
-
-                        <div>
-                            <p className="text-[11px] font-semibold tracking-[0.12em] text-nav-foreground/50 uppercase">Explore</p>
-                            <nav className="mt-4 flex flex-col gap-2.5">
-                                {footerLink('/', 'Feed')}
-                                {footerLink('/about', 'About')}
-                                {footerLink('/submit', 'Submit a story')}
-                            </nav>
-                        </div>
-
-                        <div>
-                            <p className="text-[11px] font-semibold tracking-[0.12em] text-nav-foreground/50 uppercase">Community</p>
-                            <nav className="mt-4 flex flex-col gap-2.5">
-                                {footerLink('/about', 'Community guidelines')}
-                                {footerLink('/login', 'Sign in')}
-                                {footerLink('/register', 'Create account')}
-                            </nav>
-                        </div>
-                    </div>
-
-                    <p className="mt-10 text-xs text-nav-foreground/50">&copy; {year} Chichipolies. All rights reserved.</p>
-                </div>
-            </footer>
+            <SiteFooter />
 
             <BottomNav />
             <FlashToast />
