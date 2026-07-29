@@ -1,4 +1,4 @@
-import { CaretLeft, CaretRight, Trash } from '@phosphor-icons/react';
+import { CaretLeft, CaretRight, PenNib, Trash } from '@phosphor-icons/react';
 import { Head, Link, router } from '@inertiajs/react';
 import HeadingSmall from '@/components/heading-small';
 import AdminLayout from '@/layouts/admin/layout';
@@ -17,7 +17,16 @@ export default function AdminPosts({ posts }: Props) {
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title="Admin — Stories" />
             <AdminLayout>
-                <HeadingSmall title="Stories" description="Every story on the platform, newest first" />
+                <div className="flex items-start justify-between gap-3">
+                    <HeadingSmall title="Stories" description="Every story on the platform, newest first" />
+                    <Link
+                        href="/submit"
+                        className="inline-flex shrink-0 items-center gap-1.5 rounded-full bg-primary px-4 py-2 text-xs font-semibold text-primary-foreground transition-all duration-300 ease-fluid hover:opacity-90 active:scale-[0.97]"
+                    >
+                        <PenNib weight="light" className="size-3.5" />
+                        New story
+                    </Link>
+                </div>
 
                 <div className="divide-y divide-border/70">
                     {posts.data.map((post) => (

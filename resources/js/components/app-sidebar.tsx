@@ -1,4 +1,4 @@
-import { Flag, GearSix, Newspaper, UsersThree } from '@phosphor-icons/react';
+import { Flag, GearSix, Newspaper, PenNib, UsersThree } from '@phosphor-icons/react';
 import { NavMain } from '@/components/nav-main';
 import { NavUser } from '@/components/nav-user';
 import { Sidebar, SidebarContent, SidebarFooter, SidebarHeader, SidebarMenu, SidebarMenuButton, SidebarMenuItem } from '@/components/ui/sidebar';
@@ -17,6 +17,7 @@ export function AppSidebar() {
         },
         ...(auth.user?.is_admin
             ? [
+                  { title: 'New story', url: '/submit', icon: PenNib },
                   { title: 'Stories', url: '/admin/posts', icon: Newspaper },
                   { title: 'Members', url: '/admin/users', icon: UsersThree },
                   { title: 'Reports', url: '/admin/reports', icon: Flag, badge: pendingReports },

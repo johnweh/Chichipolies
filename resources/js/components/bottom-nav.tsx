@@ -24,12 +24,12 @@ export default function BottomNav() {
                             key={href}
                             href={href}
                             className={`relative flex flex-1 flex-col items-center gap-0.5 py-2.5 text-[11px] font-medium transition-colors duration-300 ease-fluid ${
-                                active ? 'text-primary' : 'text-muted-foreground'
+                                active ? 'text-community' : 'text-muted-foreground'
                             }`}
                         >
                             <Icon weight={active ? 'fill' : 'light'} className="size-[22px]" />
                             {label}
-                            {active && <span className="absolute -top-px h-0.5 w-8 rounded-full bg-primary" />}
+                            {active && <span className="absolute -top-px h-0.5 w-8 rounded-full bg-community" />}
                         </Link>
                     );
                 })}

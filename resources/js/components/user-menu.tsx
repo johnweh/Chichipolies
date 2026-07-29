@@ -15,7 +15,7 @@ export default function UserMenu({ user }: UserMenuProps) {
             <DropdownMenu.Trigger asChild>
                 <button
                     aria-label="Account menu"
-                    className="flex size-9 items-center justify-center rounded-full bg-secondary text-xs font-bold text-foreground uppercase transition-all duration-300 ease-fluid hover:ring-2 hover:ring-ring/30 active:scale-95 data-[state=open]:ring-2 data-[state=open]:ring-ring/40"
+                    className="flex size-9 items-center justify-center rounded-full bg-white/15 text-xs font-bold text-nav-foreground uppercase transition-all duration-300 ease-fluid hover:bg-white/25 active:scale-95 data-[state=open]:ring-2 data-[state=open]:ring-white/30"
                 >
                     {user.name.charAt(0)}
                 </button>

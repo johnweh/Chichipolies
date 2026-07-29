@@ -113,3 +113,56 @@ it('blocks every admin route for non-admins', function (string $method, string $
     ['post', 'admin.users.ban'],
     ['post', 'admin.reports.dismiss'],
 ]);
+
+it('promotes a member to admin', function () {
+    $user = User::factory()->create();
+
+    $this->actingAs($this->admin)
+        ->post(route('admin.users.promote', $user))
+        ->assertRedirect();
+
+    expect($user->refresh()->is_admin)->toBeTrue();
+});
+
+it('refuses to promote a banned member', function () {
+    $user = User::factory()->banned()->create();
+
+    $this->actingAs($this->admin)
+        ->post(route('admin.users.promote', $user))
+        ->assertForbidden();
+});
+
+it('demotes another admin when more than one remains', function () {
+    $other = User::factory()->admin()->create();
+
+    $this->actingAs($this->admin)
+        ->post(route('admin.users.demote', $other))
+        ->assertRedirect();
+
+    expect($other->refresh()->is_admin)->toBeFalse();
+});
+
+it('refuses to demote yourself', function () {
+    User::factory()->admin()->create();
+
+    $this->actingAs($this->admin)
+        ->post(route('admin.users.demote', $this->admin))
+        ->assertForbidden();
+});
+
+it('refuses to demote the last admin', function () {
+    $other = User::factory()->admin()->create();
+    $this->admin->forceFill(['is_admin' => false])->save();
+
+    $this->actingAs($other)
+        ->post(route('admin.users.demote', $other))
+        ->assertForbidden();
+});
+
+it('blocks promote and demote for non-admins', function () {
+    $user = User::factory()->create();
+    $target = User::factory()->create();
+
+    $this->actingAs($user)->post(route('admin.users.promote', $target))->assertForbidden();
+    $this->actingAs($user)->post(route('admin.users.demote', $this->admin))->assertForbidden();
+});
