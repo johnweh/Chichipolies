@@ -5,13 +5,13 @@ import { useState } from 'react';
 interface StoryFormProps {
     categories: string[];
     counties: string[];
-    isAdmin?: boolean;
+    canPostOfficial?: boolean;
 }
 
 const field =
     'w-full rounded-2xl border border-input bg-card px-4 py-2.5 text-sm text-foreground transition-all duration-300 ease-fluid focus:border-ring focus:ring-2 focus:ring-ring/25 focus:outline-none';
 
-export default function StoryForm({ categories, counties, isAdmin = false }: StoryFormProps) {
+export default function StoryForm({ categories, counties, canPostOfficial = false }: StoryFormProps) {
     const { data, setData, post, processing, errors } = useForm<{
         title: string;
         body: string;
@@ -132,7 +132,7 @@ export default function StoryForm({ categories, counties, isAdmin = false }: Sto
                 {error('video_url')}
             </div>
 
-            {isAdmin && (
+            {canPostOfficial && (
                 <label className="flex cursor-pointer items-start gap-3 rounded-2xl border border-input bg-background/50 px-4 py-3.5">
                     <input
                         type="checkbox"

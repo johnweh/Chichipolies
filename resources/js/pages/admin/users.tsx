@@ -1,4 +1,4 @@
-import { ArrowCounterClockwise, Prohibit, ShieldCheck, ShieldSlash } from '@phosphor-icons/react';
+import { ArrowCounterClockwise, Prohibit, ShieldCheck, ShieldSlash, UserMinus, UserPlus } from '@phosphor-icons/react';
 import { Head, router, usePage } from '@inertiajs/react';
 import HeadingSmall from '@/components/heading-small';
 import AdminLayout from '@/layouts/admin/layout';
@@ -12,6 +12,8 @@ interface AdminUser {
     name: string;
     email: string;
     is_admin: boolean;
+    is_owner: boolean;
+    is_employee: boolean;
     banned_at: string | null;
     posts_count: number;
 }
@@ -26,6 +28,7 @@ const actionBtn =
 export default function AdminUsers({ users }: Props) {
     const { auth } = usePage<SharedData>().props;
     const adminCount = users.filter((u) => u.is_admin).length;
+    const isOwner = Boolean(auth.user?.is_owner);
 
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
@@ -48,6 +51,16 @@ export default function AdminUsers({ users }: Props) {
                                                 Admin
                                             </span>
                                         )}
+                                        {user.is_owner && (
+                                            <span className="ml-2 rounded-full bg-nav/15 px-2 py-0.5 text-[10px] font-semibold text-nav uppercase">
+                                                Owner
+                                            </span>
+                                        )}
+                                        {user.is_employee && !user.is_owner && (
+                                            <span className="ml-2 rounded-full bg-nav/10 px-2 py-0.5 text-[10px] font-semibold text-nav uppercase">
+                                                Employee
+                                            </span>
+                                        )}
                                         {user.banned_at && (
                                             <span className="ml-2 rounded-full bg-red-600/10 px-2 py-0.5 text-[10px] font-semibold text-red-600 uppercase">
                                                 Banned
@@ -58,6 +71,32 @@ export default function AdminUsers({ users }: Props) {
                                         {user.email} &middot; {user.posts_count} posts
                                     </p>
                                 </div>
+
+                                {isOwner && !user.is_owner && !user.is_employee && !user.banned_at && (
+                                    <button
+                                        onClick={() =>
+                                            confirm(`Make ${user.name} a platform employee? They will be able to post official stories.`) &&
+                                            router.post(`/admin/users/${user.id}/hire`, {}, { preserveScroll: true })
+                                        }
+                                        className={`${actionBtn} text-nav hover:bg-nav/10`}
+                                    >
+                                        <UserPlus weight="light" className="size-3.5" />
+                                        Make employee
+                                    </button>
+                                )}
+
+                                {isOwner && user.is_employee && !user.is_owner && (
+                                    <button
+                                        onClick={() =>
+                                            confirm(`Remove ${user.name} as a platform employee?`) &&
+                                            router.post(`/admin/users/${user.id}/fire`, {}, { preserveScroll: true })
+                                        }
+                                        className={`${actionBtn} text-muted-foreground hover:bg-secondary hover:text-foreground`}
+                                    >
+                                        <UserMinus weight="light" className="size-3.5" />
+                                        Remove employee
+                                    </button>
+                                )}
 
                                 {!user.is_admin && !user.banned_at && (
                                     <button
@@ -72,7 +111,7 @@ export default function AdminUsers({ users }: Props) {
                                     </button>
                                 )}
 
-                                {user.is_admin && !isSelf && adminCount > 1 && (
+                                {user.is_admin && !isSelf && !user.is_owner && adminCount > 1 && (
                                     <button
                                         onClick={() =>
                                             confirm(`Remove ${user.name}'s admin access?`) &&
@@ -85,7 +124,7 @@ export default function AdminUsers({ users }: Props) {
                                     </button>
                                 )}
 
-                                {!user.is_admin &&
+                                {!user.is_admin && !user.is_owner &&
                                     (user.banned_at ? (
                                         <button
                                             onClick={() => router.post(`/admin/users/${user.id}/unban`, {}, { preserveScroll: true })}

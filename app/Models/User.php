@@ -46,8 +46,15 @@ class User extends Authenticatable
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
             'is_admin' => 'boolean',
+            'is_owner' => 'boolean',
+            'is_employee' => 'boolean',
             'banned_at' => 'datetime',
         ];
+    }
+
+    public function canPostOfficial(): bool
+    {
+        return $this->is_owner || $this->is_employee;
     }
 
     public function isBanned(): bool

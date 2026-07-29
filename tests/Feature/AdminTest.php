@@ -166,3 +166,42 @@ it('blocks promote and demote for non-admins', function () {
     $this->actingAs($user)->post(route('admin.users.promote', $target))->assertForbidden();
     $this->actingAs($user)->post(route('admin.users.demote', $this->admin))->assertForbidden();
 });
+
+it('lets the platform owner hire and fire employees', function () {
+    $owner = User::factory()->owner()->create();
+    $member = User::factory()->create();
+
+    $this->actingAs($owner)
+        ->post(route('admin.users.hire', $member))
+        ->assertRedirect();
+
+    expect($member->refresh()->is_employee)->toBeTrue();
+
+    $this->actingAs($owner)
+        ->post(route('admin.users.fire', $member))
+        ->assertRedirect();
+
+    expect($member->refresh()->is_employee)->toBeFalse();
+});
+
+it('refuses employee management from non-owners', function () {
+    $member = User::factory()->create();
+
+    $this->actingAs($this->admin)
+        ->post(route('admin.users.hire', $member))
+        ->assertForbidden();
+
+    $employee = User::factory()->employee()->create();
+
+    $this->actingAs($this->admin)
+        ->post(route('admin.users.fire', $employee))
+        ->assertForbidden();
+});
+
+it('refuses to ban the platform owner', function () {
+    $owner = User::factory()->owner()->create();
+
+    $this->actingAs($this->admin)
+        ->post(route('admin.users.ban', $owner))
+        ->assertForbidden();
+});

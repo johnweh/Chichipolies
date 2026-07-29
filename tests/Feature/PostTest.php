@@ -83,9 +83,9 @@ it('requires login to submit', function () {
 });
 
 it('allows admins to post official stories', function () {
-    $admin = User::factory()->admin()->create();
+    $owner = User::factory()->owner()->create();
 
-    $this->actingAs($admin)->post(route('posts.store'), [
+    $this->actingAs($owner)->post(route('posts.store'), [
         'title' => 'Platform update from Chichipolies',
         'body' => 'We are rolling out a new feature for verified stories across all counties today.',
         'category' => 'Other',
@@ -96,7 +96,35 @@ it('allows admins to post official stories', function () {
     expect(Post::query()->first()->is_official)->toBeTrue();
 });
 
-it('ignores is_official from non-admin users', function () {
+it('allows platform employees to post official stories', function () {
+    $employee = User::factory()->employee()->create();
+
+    $this->actingAs($employee)->post(route('posts.store'), [
+        'title' => 'Community guidelines update',
+        'body' => 'We have updated our community guidelines to clarify how official stories work.',
+        'category' => 'Other',
+        'county' => 'Montserrado',
+        'is_official' => true,
+    ])->assertRedirect();
+
+    expect(Post::query()->first()->is_official)->toBeTrue();
+});
+
+it('ignores is_official from regular admins', function () {
+    $admin = User::factory()->admin()->create();
+
+    $this->actingAs($admin)->post(route('posts.store'), [
+        'title' => 'Unauthorized official story attempt',
+        'body' => 'A regular admin tried to post this as an official platform announcement.',
+        'category' => 'Other',
+        'county' => 'Montserrado',
+        'is_official' => true,
+    ])->assertRedirect();
+
+    expect(Post::query()->first()->is_official)->toBeFalse();
+});
+
+it('ignores is_official from regular users', function () {
     $user = User::factory()->create();
 
     $this->actingAs($user)->post(route('posts.store'), [

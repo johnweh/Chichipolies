@@ -21,7 +21,7 @@ class DashboardController extends Controller
     public function users(): Response
     {
         return Inertia::render('admin/users', [
-            'users' => User::query()->withCount('posts')->latest()->get(['id', 'name', 'email', 'is_admin', 'banned_at', 'created_at']),
+            'users' => User::query()->withCount('posts')->latest()->get(['id', 'name', 'email', 'is_admin', 'is_owner', 'is_employee', 'banned_at', 'created_at']),
         ]);
     }
 

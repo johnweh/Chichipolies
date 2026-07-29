@@ -51,6 +51,16 @@ class UserFactory extends Factory
         return $this->state(fn () => ['is_admin' => true]);
     }
 
+    public function owner(): static
+    {
+        return $this->state(fn () => ['is_admin' => true, 'is_owner' => true]);
+    }
+
+    public function employee(): static
+    {
+        return $this->state(fn () => ['is_employee' => true]);
+    }
+
     /**
      * Indicate that the user is banned.
      */

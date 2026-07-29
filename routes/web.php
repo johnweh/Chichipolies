@@ -62,6 +62,8 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(fun
     Route::post('/users/{user}/unban', [UserController::class, 'unban'])->name('users.unban');
     Route::post('/users/{user}/promote', [UserController::class, 'promote'])->name('users.promote');
     Route::post('/users/{user}/demote', [UserController::class, 'demote'])->name('users.demote');
+    Route::post('/users/{user}/hire', [UserController::class, 'hire'])->name('users.hire');
+    Route::post('/users/{user}/fire', [UserController::class, 'fire'])->name('users.fire');
     Route::post('/reports/{report}/dismiss', [App\Http\Controllers\Admin\ReportController::class, 'dismiss'])->name('reports.dismiss');
 });
 

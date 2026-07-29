@@ -33,6 +33,8 @@ export interface User {
     email: string;
     avatar?: string;
     is_admin?: boolean;
+    is_owner?: boolean;
+    is_employee?: boolean;
     email_verified_at: string | null;
     created_at: string;
     updated_at: string;
