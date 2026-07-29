@@ -32,3 +32,13 @@ export interface Paginated<T> {
     total: number;
     current_page: number;
 }
+
+export interface NotificationItem {
+    id: string;
+    type: 'comment' | 'vote';
+    post: { id: number; title: string };
+    actor: UserRef;
+    body?: string;
+    is_true?: boolean;
+    created_at: string;
+}

@@ -1,4 +1,4 @@
-import { Head } from '@inertiajs/react';
+import { Head, Link } from '@inertiajs/react';
 import Reveal from '@/components/reveal';
 import PublicLayout from '@/layouts/public-layout';
 
@@ -67,6 +67,21 @@ export default function Terms() {
                             <p className="mt-2 max-w-[65ch] text-sm leading-relaxed text-muted-foreground">{section.body}</p>
                         </section>
                     ))}
+                </div>
+            </Reveal>
+
+            <Reveal delay={180} className="mt-12">
+                <h2 className="font-display text-lg font-semibold text-foreground">Related pages</h2>
+                <div className="mt-4 flex flex-wrap gap-2">
+                    <Link href="/privacy" className="rounded-full border border-input bg-card px-4 py-2 text-sm font-medium text-foreground hover:border-primary hover:text-primary">
+                        Privacy policy
+                    </Link>
+                    <Link href="/guidelines" className="rounded-full border border-input bg-card px-4 py-2 text-sm font-medium text-foreground hover:border-primary hover:text-primary">
+                        Community guidelines
+                    </Link>
+                    <Link href="/about" className="rounded-full border border-input bg-card px-4 py-2 text-sm font-medium text-foreground hover:border-primary hover:text-primary">
+                        About Chichipolies
+                    </Link>
                 </div>
             </Reveal>
         </PublicLayout>

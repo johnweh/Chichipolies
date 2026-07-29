@@ -1,24 +1,31 @@
-import { Head } from '@inertiajs/react';
+import { Head, Link } from '@inertiajs/react';
 import Reveal from '@/components/reveal';
 import PublicLayout from '@/layouts/public-layout';
 
-const guidelines = [
+const steps = [
     {
-        title: 'Report what you saw',
-        body: 'First-hand accounts keep the platform trustworthy. Say what you witnessed, not what you heard second-hand.',
+        title: 'Citizens report',
+        body: 'Anyone signed in can submit a story from any of Liberia\'s 15 counties. Add what you saw, a photo if you have one, and the category that fits best.',
     },
     {
-        title: 'Vote honestly',
-        body: 'Only mark a story true if you have good reason to believe it. Your vote shapes what the community trusts.',
+        title: 'Community votes',
+        body: 'Readers mark stories as likely true or likely false. After enough votes, a story earns a verification label everyone can see at a glance.',
     },
     {
-        title: 'Keep it civil',
-        body: 'No hate speech, no incitement, no personal attacks. Disagree with the story, not the person.',
+        title: 'Neighbours discuss',
+        body: 'Comments add context, corrections and eyewitness detail. Active discussions surface in the feed so important stories stay visible.',
     },
     {
-        title: 'Flag abuse',
-        body: 'See spam, misinformation or threats? Report it. Our moderators review every report.',
+        title: 'Moderators safeguard',
+        body: 'Reported abuse is reviewed by our moderation team. Guidelines, privacy rules and terms keep the platform accountable.',
     },
+];
+
+const links = [
+    { href: '/search', label: 'Search stories' },
+    { href: '/guidelines', label: 'Community guidelines' },
+    { href: '/privacy', label: 'Privacy policy' },
+    { href: '/terms', label: 'Terms of service' },
 ];
 
 export default function About() {
@@ -40,21 +47,59 @@ export default function About() {
                 </p>
             </Reveal>
 
-            <Reveal delay={150} className="mt-12">
-                <h2 className="font-display text-xl font-semibold text-foreground">Community guidelines</h2>
-                <ol className="mt-5 space-y-0 divide-y divide-border/70">
-                    {guidelines.map((guideline, i) => (
-                        <li key={guideline.title} className="flex gap-5 py-5">
-                            <span className="font-display text-2xl leading-none font-semibold text-primary/40 tabular-nums">
+            <Reveal delay={120} className="mt-12">
+                <h2 className="font-display text-xl font-semibold text-foreground">How it works</h2>
+                <div className="mt-5 grid gap-4 sm:grid-cols-2">
+                    {steps.map((step, i) => (
+                        <div key={step.title} className="rounded-2xl bg-card p-5 shadow-soft ring-1 ring-border/60">
+                            <span className="font-display text-2xl font-semibold text-primary/40 tabular-nums">
                                 {String(i + 1).padStart(2, '0')}
                             </span>
-                            <div>
-                                <h3 className="text-sm font-semibold text-foreground">{guideline.title}</h3>
-                                <p className="mt-1 max-w-[55ch] text-sm leading-relaxed text-muted-foreground">{guideline.body}</p>
-                            </div>
-                        </li>
+                            <h3 className="mt-2 text-sm font-semibold text-foreground">{step.title}</h3>
+                            <p className="mt-2 text-sm leading-relaxed text-muted-foreground">{step.body}</p>
+                        </div>
                     ))}
-                </ol>
+                </div>
+            </Reveal>
+
+            <Reveal delay={160} className="mt-12">
+                <h2 className="font-display text-xl font-semibold text-foreground">Useful links</h2>
+                <div className="mt-4 flex flex-wrap gap-2">
+                    {links.map((link) => (
+                        <Link
+                            key={link.href}
+                            href={link.href}
+                            className="rounded-full border border-input bg-card px-4 py-2 text-sm font-medium text-foreground transition-colors hover:border-primary hover:text-primary"
+                        >
+                            {link.label}
+                        </Link>
+                    ))}
+                </div>
+            </Reveal>
+
+            <Reveal delay={200} className="mt-12">
+                <h2 className="font-display text-xl font-semibold text-foreground">Community guidelines</h2>
+                <p className="mt-3 max-w-[60ch] text-sm leading-relaxed text-muted-foreground">
+                    Honest reporting, civil discussion and prompt abuse reporting keep Chichipolies trustworthy. Read the full
+                    guidelines for detail on voting, moderation and what we remove.
+                </p>
+                <Link
+                    href="/guidelines"
+                    className="mt-4 inline-flex rounded-lg bg-primary px-5 py-2 text-sm font-semibold text-primary-foreground transition-opacity hover:opacity-90"
+                >
+                    Read community guidelines
+                </Link>
+            </Reveal>
+
+            <Reveal delay={240} className="mt-12 rounded-2xl bg-card p-6 shadow-soft ring-1 ring-border/60">
+                <h2 className="font-display text-lg font-semibold text-foreground">Contact</h2>
+                <p className="mt-2 max-w-[60ch] text-sm leading-relaxed text-muted-foreground">
+                    Questions about the platform, moderation or your account? Email{' '}
+                    <a href="mailto:hello@chichipolies.com" className="font-medium text-primary hover:underline">
+                        hello@chichipolies.com
+                    </a>{' '}
+                    and we will respond as soon as we can.
+                </p>
             </Reveal>
         </PublicLayout>
     );

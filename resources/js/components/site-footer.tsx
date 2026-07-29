@@ -50,16 +50,23 @@ export default function SiteFooter() {
 
                     <FooterColumn title="Platform">
                         <FooterLink href="/">Feed</FooterLink>
+                        <FooterLink href="/search">Search</FooterLink>
                         <FooterLink href="/about">About</FooterLink>
                         <FooterLink href="/submit">Submit a story</FooterLink>
                         <FooterLink href="/?tab=verified">Verified stories</FooterLink>
                         <FooterLink href="/?tab=active">Active discussions</FooterLink>
+                        {auth.user && (
+                            <>
+                                <FooterLink href="/saved">Saved stories</FooterLink>
+                                <FooterLink href="/notifications">Notifications</FooterLink>
+                            </>
+                        )}
                     </FooterColumn>
 
                     <FooterColumn title="Policies">
                         <FooterLink href="/privacy">Privacy policy</FooterLink>
                         <FooterLink href="/terms">Terms of service</FooterLink>
-                        <FooterLink href="/about">Community guidelines</FooterLink>
+                        <FooterLink href="/guidelines">Community guidelines</FooterLink>
                     </FooterColumn>
 
                     <FooterColumn title="Account">
@@ -67,6 +74,8 @@ export default function SiteFooter() {
                             <>
                                 <FooterLink href="/settings/profile">Settings</FooterLink>
                                 <FooterLink href="/submit">Post a story</FooterLink>
+                                <FooterLink href="/saved">Saved stories</FooterLink>
+                                <FooterLink href="/notifications">Notifications</FooterLink>
                             </>
                         ) : (
                             <>

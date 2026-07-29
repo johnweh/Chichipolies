@@ -4,7 +4,9 @@ namespace App\Http\Middleware;
 
 use App\Enums\Category;
 use App\Enums\County;
+use App\Models\Comment;
 use App\Models\Report;
+use App\Models\Vote;
 use Illuminate\Foundation\Inspiring;
 use Illuminate\Http\Request;
 use Inertia\Middleware;
@@ -56,6 +58,29 @@ class HandleInertiaRequests extends Middleware
                 : null,
             'categories' => Category::values(),
             'counties' => County::values(),
+            'activityCount' => function () use ($request): ?int {
+                $user = $request->user();
+
+                if ($user === null) {
+                    return null;
+                }
+
+                $since = now()->subDays(7);
+
+                $comments = Comment::query()
+                    ->where('user_id', '!=', $user->id)
+                    ->where('created_at', '>=', $since)
+                    ->whereHas('post', fn ($query) => $query->where('user_id', $user->id))
+                    ->count();
+
+                $votes = Vote::query()
+                    ->where('user_id', '!=', $user->id)
+                    ->where('created_at', '>=', $since)
+                    ->whereHas('post', fn ($query) => $query->where('user_id', $user->id))
+                    ->count();
+
+                return $comments + $votes;
+            },
         ];
     }
 }
