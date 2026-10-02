@@ -1,6 +1,3 @@
-import { Bell, Heart, MagnifyingGlass, Moon, Sun } from '@phosphor-icons/react';
-import { Link, usePage } from '@inertiajs/react';
-import { useState, type PropsWithChildren } from 'react';
 import BottomNav from '@/components/bottom-nav';
 import BrandMark from '@/components/brand-mark';
 import FlashToast from '@/components/flash-toast';
@@ -8,11 +5,14 @@ import { HeaderSearch, MobileHeaderSearch } from '@/components/header-search';
 import SiteFooter from '@/components/site-footer';
 import UserMenu from '@/components/user-menu';
 import { useAppearance } from '@/hooks/use-appearance';
+import { Link, usePage } from '@inertiajs/react';
+import { Bell, Heart, MagnifyingGlass, Moon, Sun } from '@phosphor-icons/react';
+import { useState, type PropsWithChildren } from 'react';
 
-interface LayoutProps {
+type LayoutProps = {
     auth: { user: { name: string; email?: string; is_admin?: boolean } | null };
     activityCount?: number | null;
-}
+};
 
 export default function PublicLayout({ children }: PropsWithChildren) {
     const { props, url } = usePage<LayoutProps>();
@@ -35,7 +35,7 @@ export default function PublicLayout({ children }: PropsWithChildren) {
                 }`}
             >
                 {label}
-                {active && <span className="absolute inset-x-2 bottom-3 h-0.5 rounded-full bg-nav-foreground/80" />}
+                {active && <span className="bg-nav-foreground/80 absolute inset-x-2 bottom-3 h-0.5 rounded-full" />}
             </Link>
         );
     };
@@ -46,11 +46,11 @@ export default function PublicLayout({ children }: PropsWithChildren) {
         }`;
 
     return (
-        <div className="min-h-[100dvh] bg-background pb-20 sm:pb-0">
-            <header className="sticky top-0 z-40 bg-nav text-nav-foreground">
+        <div className="bg-background min-h-[100dvh] pb-20 sm:pb-0">
+            <header className="bg-nav text-nav-foreground sticky top-0 z-40">
                 <div className="mx-auto flex max-w-7xl items-center gap-3 px-4 sm:px-6">
                     <Link href="/" className="group flex shrink-0 items-center gap-2.5 py-4" aria-label="Chichipolies home">
-                        <BrandMark variant="onNav" className="size-9 rounded-lg transition-transform duration-300 ease-fluid group-hover:scale-105" />
+                        <BrandMark variant="onNav" className="ease-fluid size-9 rounded-lg transition-transform duration-300 group-hover:scale-105" />
                         <span className="hidden text-lg font-semibold tracking-tight sm:inline">Chichipolies</span>
                     </Link>
 
@@ -86,16 +86,12 @@ export default function PublicLayout({ children }: PropsWithChildren) {
                         >
                             <Bell weight="light" className="size-5" />
                             {auth.user && activityCount != null && activityCount > 0 && (
-                                <span className="absolute top-1.5 right-1.5 flex size-4 items-center justify-center rounded-full bg-nav-foreground text-[10px] font-bold text-nav">
+                                <span className="bg-nav-foreground text-nav absolute top-1.5 right-1.5 flex size-4 items-center justify-center rounded-full text-[10px] font-bold">
                                     {activityCount > 9 ? '9+' : activityCount}
                                 </span>
                             )}
                         </Link>
-                        <button
-                            onClick={() => updateAppearance(dark ? 'light' : 'dark')}
-                            aria-label="Toggle theme"
-                            className={iconLinkClass(false)}
-                        >
+                        <button onClick={() => updateAppearance(dark ? 'light' : 'dark')} aria-label="Toggle theme" className={iconLinkClass(false)}>
                             {dark ? <Sun weight="light" className="size-5" /> : <Moon weight="light" className="size-5" />}
                         </button>
                         {auth.user ? (
@@ -103,7 +99,7 @@ export default function PublicLayout({ children }: PropsWithChildren) {
                         ) : (
                             <Link
                                 href="/login"
-                                className="ml-1 rounded-full bg-nav-foreground px-4 py-2 text-sm font-semibold text-nav transition-opacity hover:opacity-90"
+                                className="bg-nav-foreground text-nav ml-1 rounded-full px-4 py-2 text-sm font-semibold transition-opacity hover:opacity-90"
                             >
                                 Sign in
                             </Link>
