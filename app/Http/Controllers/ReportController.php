@@ -16,6 +16,14 @@ class ReportController extends Controller
             'reason' => ['required', Rule::in(Report::REASONS)],
         ]);
 
+        $alreadyReported = $post->reports()
+            ->where('user_id', $request->user()->id)
+            ->exists();
+
+        if ($alreadyReported) {
+            return back()->with('success', 'You have already reported this story. Our moderators will look at it.');
+        }
+
         $post->reports()->create([
             'user_id' => $request->user()->id,
             'reason' => $validated['reason'],

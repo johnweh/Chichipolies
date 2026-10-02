@@ -34,20 +34,29 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/saved', [SavedController::class, 'index'])->name('saved');
     Route::get('/notifications', [NotificationsController::class, 'index'])->name('notifications');
 
-    Route::get('/submit', [PostController::class, 'create'])->name('posts.create');
-    Route::post('/submit', [PostController::class, 'store'])->name('posts.store');
+    // Writing to the site needs a verified address and is rate limited per user.
+    Route::middleware(['verified'])->group(function () {
+        Route::get('/submit', [PostController::class, 'create'])->name('posts.create');
 
-    Route::post('/post/{post}/vote', [VoteController::class, 'store'])
-        ->name('votes.store');
+        Route::post('/submit', [PostController::class, 'store'])
+            ->middleware('throttle:posts')
+            ->name('posts.store');
 
-    Route::post('/post/{post}/comments', [CommentController::class, 'store'])
-        ->name('comments.store');
+        Route::post('/post/{post}/vote', [VoteController::class, 'store'])
+            ->middleware('throttle:votes')
+            ->name('votes.store');
 
-    Route::post('/post/{post}/report', [ReportController::class, 'store'])
-        ->name('reports.store');
+        Route::post('/post/{post}/comments', [CommentController::class, 'store'])
+            ->middleware('throttle:comments')
+            ->name('comments.store');
+
+        Route::post('/post/{post}/report', [ReportController::class, 'store'])
+            ->middleware('throttle:reports')
+            ->name('reports.store');
+    });
 });
 
-Route::middleware(['auth', 'throttle:10,1'])->prefix('ai')->name('ai.')->group(function () {
+Route::middleware(['auth', 'verified', 'throttle:10,1'])->prefix('ai')->name('ai.')->group(function () {
     Route::post('/improve-post', [AiController::class, 'improvePost'])->name('improve-post');
     Route::post('/suggest-comment', [AiController::class, 'suggestComment'])->name('suggest-comment');
 });

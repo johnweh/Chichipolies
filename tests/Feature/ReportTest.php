@@ -29,3 +29,20 @@ it('requires login to report', function () {
     $this->post(route('reports.store', $post), ['reason' => 'Spam'])
         ->assertRedirect(route('login'));
 });
+
+it('keeps one report per person per story', function () {
+    $post = Post::factory()->create();
+    $user = User::factory()->create();
+
+    $this->actingAs($user)
+        ->post(route('reports.store', $post), ['reason' => 'Spam'])
+        ->assertRedirect();
+
+    $this->actingAs($user)
+        ->post(route('reports.store', $post), ['reason' => 'Misinformation'])
+        ->assertRedirect()
+        ->assertSessionHas('success');
+
+    expect($post->reports()->count())->toBe(1)
+        ->and($post->reports()->first()->reason)->toBe('Spam');
+});

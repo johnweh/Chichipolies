@@ -1,16 +1,16 @@
 import { Link, usePage } from '@inertiajs/react';
 import { type ReactNode } from 'react';
 
-interface SharedProps {
+type SharedProps = {
     auth: { user: { name: string } | null };
     categories: string[];
     counties: string[];
-}
+};
 
 function FooterColumn({ title, children }: { title: string; children: ReactNode }) {
     return (
         <div>
-            <p className="text-[11px] font-semibold tracking-[0.12em] text-nav-foreground/50 uppercase">{title}</p>
+            <p className="text-nav-foreground/50 text-[11px] font-semibold tracking-[0.12em] uppercase">{title}</p>
             <nav className="mt-4 flex flex-col gap-2">{children}</nav>
         </div>
     );
@@ -18,7 +18,7 @@ function FooterColumn({ title, children }: { title: string; children: ReactNode 
 
 function FooterLink({ href, children }: { href: string; children: ReactNode }) {
     return (
-        <Link href={href} className="text-sm text-nav-foreground/75 transition-colors hover:text-nav-foreground">
+        <Link href={href} className="text-nav-foreground/75 hover:text-nav-foreground text-sm transition-colors">
             {children}
         </Link>
     );
@@ -29,7 +29,7 @@ export default function SiteFooter() {
     const year = new Date().getFullYear();
 
     return (
-        <footer className="mt-8 hidden bg-nav text-nav-foreground sm:block">
+        <footer className="bg-nav text-nav-foreground mt-8 hidden sm:block">
             <div className="mx-auto max-w-7xl px-6 py-12">
                 <div className="grid gap-10 sm:grid-cols-2 lg:grid-cols-5">
                     <FooterColumn title="Categories">
@@ -87,7 +87,7 @@ export default function SiteFooter() {
                     </FooterColumn>
                 </div>
 
-                <p className="mt-10 text-xs text-nav-foreground/50">&copy; {year} Chichipolies. All rights reserved.</p>
+                <p className="text-nav-foreground/50 mt-10 text-xs">&copy; {year} Chichipolies. All rights reserved.</p>
             </div>
         </footer>
     );
