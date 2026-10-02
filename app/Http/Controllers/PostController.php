@@ -7,6 +7,7 @@ use App\Enums\County;
 use App\Http\Requests\StorePostRequest;
 use App\Models\Post;
 use App\Models\Report;
+use App\Services\PhotoStore;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
@@ -36,9 +37,10 @@ class PostController extends Controller
         ]);
     }
 
-    public function store(StorePostRequest $request): RedirectResponse
+    public function store(StorePostRequest $request, PhotoStore $photos): RedirectResponse
     {
-        $photoPath = $request->file('photo')?->store('posts', 'public');
+        $photo = $request->file('photo');
+        $photoPath = $photo ? $photos->store($photo) : null;
 
         $post = $request->user()->posts()->create([
             ...$request->safe()->except(['photo', 'is_official']),
@@ -46,6 +48,6 @@ class PostController extends Controller
             'is_official' => $request->boolean('is_official') && $request->user()->canPostOfficial(),
         ]);
 
-        return redirect()->route('posts.show', $post)->with('success', 'Story posted!');
+        return redirect()->route('posts.show', $post)->with('success', 'Story posted.');
     }
 }

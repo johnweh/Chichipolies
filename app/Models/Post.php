@@ -5,13 +5,13 @@ namespace App\Models;
 use App\Enums\Category;
 use App\Enums\County;
 use App\Enums\VerificationStatus;
+use App\Services\PhotoStore;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Storage;
 
 class Post extends Model
 {
@@ -23,6 +23,16 @@ class Post extends Model
     ];
 
     protected $appends = ['verification_status', 'photo_url'];
+
+    protected static function booted(): void
+    {
+        // A deleted story takes its photo with it. Cascades done by the database
+        // do not fire this, so anything that removes posts in bulk must delete
+        // them through Eloquent (see User::booted).
+        static::deleting(function (Post $post) {
+            PhotoStore::make()->delete($post->photo_path);
+        });
+    }
 
     protected function casts(): array
     {
@@ -63,7 +73,7 @@ class Post extends Model
     protected function photoUrl(): Attribute
     {
         return Attribute::get(
-            fn (): ?string => $this->photo_path ? Storage::disk('public')->url($this->photo_path) : null
+            fn (): ?string => PhotoStore::make()->url($this->photo_path)
         );
     }
 
