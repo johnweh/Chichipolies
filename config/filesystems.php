@@ -17,6 +17,19 @@ return [
 
     /*
     |--------------------------------------------------------------------------
+    | Story Photos
+    |--------------------------------------------------------------------------
+    |
+    | The disk that holds uploaded story photos (see App\Services\PhotoStore).
+    | `public` serves them from this server via the storage symlink; `r2` or
+    | `s3` puts them in a bucket so the app server holds no user content.
+    |
+    */
+
+    'photos' => env('PHOTOS_DISK', 'public'),
+
+    /*
+    |--------------------------------------------------------------------------
     | Filesystem Disks
     |--------------------------------------------------------------------------
     |
@@ -54,6 +67,21 @@ return [
             'url' => env('AWS_URL'),
             'endpoint' => env('AWS_ENDPOINT'),
             'use_path_style_endpoint' => env('AWS_USE_PATH_STYLE_ENDPOINT', false),
+            'throw' => false,
+        ],
+
+        // Cloudflare R2 (S3-compatible). The bucket is served publicly at
+        // R2_PUBLIC_URL so photo URLs point straight at it.
+        'r2' => [
+            'driver' => 's3',
+            'key' => env('R2_ACCESS_KEY_ID'),
+            'secret' => env('R2_SECRET_ACCESS_KEY'),
+            'region' => 'auto',
+            'bucket' => env('R2_BUCKET'),
+            'endpoint' => env('R2_ENDPOINT'),
+            'url' => env('R2_PUBLIC_URL'),
+            'use_path_style_endpoint' => true,
+            'visibility' => 'public',
             'throw' => false,
         ],
 

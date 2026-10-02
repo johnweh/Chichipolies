@@ -52,6 +52,13 @@ class User extends Authenticatable implements MustVerifyEmail
         ];
     }
 
+    protected static function booted(): void
+    {
+        static::deleting(function (User $user) {
+            $user->posts()->each(fn (Post $post) => $post->delete());
+        });
+    }
+
     public function canPostOfficial(): bool
     {
         return $this->is_owner || $this->is_employee;
