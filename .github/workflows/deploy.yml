@@ -1,0 +1,90 @@
+name: Deploy
+
+# Production deploy to the CPH VPS. Runs when the tests workflow succeeds on
+# main (a red suite never deploys), or by hand from Actions → Deploy. It runs
+# the server's /usr/local/bin/chichipolies-deploy over SSH (deploy/deploy.sh),
+# which hard-resets /opt/chichipolies/src to origin/main.
+#
+# Secrets (Settings → Secrets and variables → Actions):
+#   DEPLOY_SSH_KEY      private key authorised for root on the VPS (required)
+#   DEPLOY_KNOWN_HOSTS  output of `ssh-keyscan 72.62.132.248` (recommended)
+# Variables:
+#   DEPLOY_HOST         defaults to 72.62.132.248
+#   DEPLOY_USER         defaults to root
+
+on:
+  workflow_run:
+    workflows: [tests]
+    types: [completed]
+    branches: [main]
+  workflow_dispatch:
+
+concurrency:
+  group: deploy-production
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    if: >-
+      github.event_name == 'workflow_dispatch' ||
+      (github.event.workflow_run.conclusion == 'success' &&
+       github.event.workflow_run.event == 'push' &&
+       github.event.workflow_run.head_branch == 'main')
+    runs-on: ubuntu-latest
+    environment: production
+    env:
+      DEPLOY_HOST: ${{ vars.DEPLOY_HOST || '72.62.132.248' }}
+      DEPLOY_USER: ${{ vars.DEPLOY_USER || 'root' }}
+
+    steps:
+      - name: Refuse to deploy anything but main
+        if: github.ref != 'refs/heads/main'
+        run: |
+          echo "::error::The server resets to origin/main; run this workflow from main."
+          exit 1
+
+      - name: Prepare SSH
+        env:
+          DEPLOY_SSH_KEY: ${{ secrets.DEPLOY_SSH_KEY }}
+          DEPLOY_KNOWN_HOSTS: ${{ secrets.DEPLOY_KNOWN_HOSTS }}
+        run: |
+          if [ -z "$DEPLOY_SSH_KEY" ]; then
+            echo "::error::DEPLOY_SSH_KEY secret is not set."
+            exit 1
+          fi
+          mkdir -p ~/.ssh && chmod 700 ~/.ssh
+          printf '%s\n' "$DEPLOY_SSH_KEY" > ~/.ssh/id_deploy
+          chmod 600 ~/.ssh/id_deploy
+          if [ -n "$DEPLOY_KNOWN_HOSTS" ]; then
+            printf '%s\n' "$DEPLOY_KNOWN_HOSTS" > ~/.ssh/known_hosts
+          else
+            echo "::warning::DEPLOY_KNOWN_HOSTS not set; trusting the host key seen on first connect."
+            ssh-keyscan -H "$DEPLOY_HOST" > ~/.ssh/known_hosts 2>/dev/null
+          fi
+          chmod 644 ~/.ssh/known_hosts
+          cat > ~/.ssh/config <<CFG
+          Host vps
+            HostName $DEPLOY_HOST
+            User $DEPLOY_USER
+            IdentityFile ~/.ssh/id_deploy
+            IdentitiesOnly yes
+            StrictHostKeyChecking yes
+            ConnectTimeout 15
+          CFG
+
+      - name: Deploy
+        run: ssh vps 'chichipolies-deploy'
+
+      - name: Confirm deployed commit matches origin/main
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          deployed="$(ssh vps 'git -C /opt/chichipolies/src rev-parse HEAD')"
+          expected="$(gh api "repos/${GITHUB_REPOSITORY}/branches/main" --jq .commit.sha)"
+          echo "deployed: $deployed"
+          echo "origin/main: $expected"
+          [ "$deployed" = "$expected" ] || { echo "::error::Server HEAD does not match origin/main."; exit 1; }
+
+      - name: Remove SSH key
+        if: always()
+        run: rm -f ~/.ssh/id_deploy

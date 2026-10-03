@@ -1,0 +1,42 @@
+# Installed on the CPH VPS as /opt/chichipolies/docker-compose.yml.
+# Database: the existing outreach-postgres container (database `chichipolies`,
+# role `chichipolies`). Redis: the shared mig-redis (REDIS_PREFIX=chichipolies_).
+# Both live on the external mig_net network, as does the triveelo-nginx-1 edge.
+name: chichipolies
+services:
+  chichipolies-app:
+    build: ./src/deploy/php
+    image: chichipolies-php:8.4
+    container_name: chichipolies-app
+    restart: unless-stopped
+    working_dir: /var/www/html
+    volumes: [./src:/var/www/html]
+    networks: [mig]
+  chichipolies-web:
+    image: nginx:1.27-alpine
+    container_name: chichipolies-web
+    restart: unless-stopped
+    volumes:
+      - ./src:/var/www/html:ro
+      - ./nginx.conf:/etc/nginx/conf.d/default.conf:ro
+    networks: [mig]
+    depends_on: [chichipolies-app]
+  chichipolies-worker:
+    image: chichipolies-php:8.4
+    container_name: chichipolies-worker
+    restart: unless-stopped
+    working_dir: /var/www/html
+    volumes: [./src:/var/www/html]
+    command: php artisan queue:work --sleep=3 --tries=3 --max-time=3600
+    networks: [mig]
+  chichipolies-scheduler:
+    image: chichipolies-php:8.4
+    container_name: chichipolies-scheduler
+    restart: unless-stopped
+    working_dir: /var/www/html
+    volumes: [./src:/var/www/html]
+    # Output is kept so a failing scheduled command shows in `docker logs`.
+    entrypoint: ["sh", "-c", "while true; do php artisan schedule:run --no-interaction 2>&1; sleep 60; done"]
+    networks: [mig]
+networks:
+  mig: {name: mig_net, external: true}

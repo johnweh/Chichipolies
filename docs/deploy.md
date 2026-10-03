@@ -1,6 +1,7 @@
 # Deploying Chichipolies
 
-Notes that a production install must follow. Grows as the deploy stack lands.
+The server runbook (layout, first install, workflow, mail) is `deploy/README.md`.
+This file holds the application-level rules a production install must follow.
 
 ## Story photos
 
